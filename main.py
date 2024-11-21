@@ -10,6 +10,32 @@ from Mino_S import Mino_S
 from Mino_Z import Mino_Z
 from Mino_T import Mino_T
 
+def pickPiece():
+    '''
+    0 - O piece
+    1 - I piece
+    2 - S piece
+    3 - Z piece
+    4 - L piece
+    5 - J piece
+    6 - T piece
+    '''
+    mino = None
+    i = random.randint(0,6)
+
+    piece = {
+        0: Mino_O,
+        1: Mino_I,
+        2: Mino_S,
+        3: Mino_Z,
+        4: Mino_L,
+        5: Mino_J,
+        6: Mino_T
+    }
+    mino = piece[i]()
+
+
+
 # General Setup
 pygame.init()
 running = True
@@ -18,20 +44,11 @@ running = True
 game_board = Box(settings.GAME_WIDTH + 20, settings.GAME_HEIGHT + 20, 'white', 10, 'lightgray')
 
 # tetris pieces
-'''
-0 - O piece
-1 - I piece
-2 - S piece
-3 - Z piece
-4 - L piece
-5 - J piece
-6 - T piece
-'''
 current = Mino_L()
 current.setXY(settings.START_LOCATION_X, settings.START_LOCATION_Y)
 
 
-cur_piece = random.randint(0,6)
+
 
 
 while running:
@@ -49,8 +66,6 @@ while running:
     current.update()
     settings.KEYHANDLER.update()
     
-
-
 
 # Close the window
 pygame.quit()
