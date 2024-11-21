@@ -3,22 +3,20 @@ from Block import Block
 import settings
 
 class Mino:
-    b = [None]*4
-    tempB = [None]*4
     auto_drop_counter = 0
-    direction = 1
-    left, right, bottom = False, False, False
-    active = True
 
     def create(self, c):
-        self.b[0] = Block(c)
-        self.b[1] = Block(c)
-        self.b[2] = Block(c)
-        self.b[3] = Block(c)
-        self.tempB[0] = Block(c)
-        self.tempB[1] = Block(c)
-        self.tempB[2] = Block(c)
-        self.tempB[3] = Block(c)
+        self.left, self.right, self.bottom = False, False, False
+        self.active = False
+        self.b = list()
+        self.tempB = list()
+        self.direction = 1
+        for i in range(4):
+            self.b.append(Block(c))
+            self.tempB.append(Block(c))
+    
+    def setActivePiece(self):
+        self.active = True
 
     def getDirection1():
         pass
@@ -35,9 +33,12 @@ class Mino:
     def checkMovementCollision(self):
         self.left, self.right, self.bottom = False, False, False
 
+        count = 0
         for i in self.b:
+            count +=1
             if i.x == 0:
                 self.left = True
+        print(count)
 
         for i in self.b:
             if i.x == settings.GAME_PIXEL_SIZE * 10:
@@ -93,6 +94,8 @@ class Mino:
             self.b[1].x -= settings.GAME_PIXEL_SIZE
             self.b[2].x -= settings.GAME_PIXEL_SIZE
             self.b[3].x -= settings.GAME_PIXEL_SIZE 
+        else:
+            print(self.left)
 
         if not self.right and settings.KEYHANDLER.check_key(pygame.K_RIGHT):
             self.b[0].x += settings.GAME_PIXEL_SIZE
@@ -107,7 +110,7 @@ class Mino:
             self.b[3].y += settings.GAME_PIXEL_SIZE
             self.auto_drop_counter = 0
         elif self.bottom:
-            active = False
+            self.active = False
 
     def bilt(self):
         for i in self.b:
