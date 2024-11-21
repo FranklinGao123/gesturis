@@ -115,3 +115,7 @@ class Mino:
     def bilt(self):
         for i in self.b:
             i.bilt()
+    
+    def biltNext(self):
+        for i in self.b:
+            i.biltNext()

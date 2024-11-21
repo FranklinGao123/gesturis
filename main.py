@@ -48,8 +48,8 @@ staticBlocks = list()
 current = Mino_J()
 current.setXY(settings.START_LOCATION_X, settings.START_LOCATION_Y)
 current.setActivePiece()
-next = Mino_I()
-next.setXY(settings.START_LOCATION_X, settings.START_LOCATION_Y)
+next = pickPiece()
+next.setXY(0,0)
 
 
 while running:
@@ -60,9 +60,9 @@ while running:
             
     settings.display_surface.fill('white')
     game_board.bilt(settings.WINDOW_WIDTH/2 - settings.GAME_WIDTH/2 - 10, settings.WINDOW_HEIGHT/2 - settings.GAME_HEIGHT/2 - 10)
-    next_piece.bilt(settings.WINDOW_WIDTH/2 - settings.GAME_WIDTH * 1.5, settings.WINDOW_HEIGHT/2 + settings.GAME_HEIGHT/4 - 10)
+    next_piece.bilt(settings.NEXT_PIECE_X, settings.NEXT_PIECE_Y)
     current.bilt()
-    next.bilt()
+    next.biltNext()
     # print(current.active, next.active)
     print(current.b[0].x, next.b[0].x)
     

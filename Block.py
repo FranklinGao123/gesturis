@@ -20,3 +20,6 @@ class Block:
 
     def bilt(self):
         self.surf.bilt(settings.GAME_X_OFFSET + self.x, settings.GAME_Y_OFFSET + self.y)
+
+    def biltNext(self):
+        self.surf.bilt(settings.NEXT_PIECE_X + self.x, settings.NEXT_PIECE_Y + self.y)
