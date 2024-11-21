@@ -20,7 +20,6 @@ def pickPiece():
     5 - J piece
     6 - T piece
     '''
-    mino = None
     i = random.randint(0,6)
 
     piece = {
@@ -32,7 +31,7 @@ def pickPiece():
         5: Mino_J,
         6: Mino_T
     }
-    mino = piece[i]()
+    return piece[i]()
 
 
 
@@ -41,11 +40,15 @@ pygame.init()
 running = True
 
 # tetris grid 20x10
-game_board = Box(settings.GAME_WIDTH + 20, settings.GAME_HEIGHT + 20, 'white', 10, 'lightgray')
+game_board = Box(settings.GAME_WIDTH + 25, settings.GAME_HEIGHT + 25, 'white', 10, 'lightgray')
+next_piece = Box(settings.GAME_PIXEL_SIZE * 6, settings.GAME_PIXEL_SIZE * 6, 'white', 10, 'lightgray')
+staticBlocks = list()
 
 # tetris pieces
 current = Mino_L()
 current.setXY(settings.START_LOCATION_X, settings.START_LOCATION_Y)
+next = Mino_L()
+next.setXY(0, 0)
 
 
 
@@ -59,8 +62,10 @@ while running:
             
     settings.display_surface.fill('white')
     game_board.bilt(settings.WINDOW_WIDTH/2 - settings.GAME_WIDTH/2 - 10, settings.WINDOW_HEIGHT/2 - settings.GAME_HEIGHT/2 - 10)
+    next_piece.bilt(settings.WINDOW_WIDTH/2 - settings.GAME_WIDTH * 1.5, settings.WINDOW_HEIGHT/2 + settings.GAME_HEIGHT/4 - 10)
     current.bilt()
-
+    next.bilt()
+    print(current.b[0].x, next.b[0].x)
     
     pygame.display.update()
     current.update()
