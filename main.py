@@ -44,7 +44,7 @@ running = True
 game_board = Box(settings.GAME_WIDTH + 20, settings.GAME_HEIGHT + 20, 'white', 10, 'lightgray')
 
 # tetris pieces
-current = Mino_L()
+current = Mino_J()
 current.setXY(settings.START_LOCATION_X, settings.START_LOCATION_Y)
 
 
