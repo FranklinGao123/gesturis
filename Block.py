@@ -6,13 +6,17 @@ class Block:
     def __init__(self, colour):
         self.x = 0
         self.y = 0
-        self.colour = colour
 
         self.surf = Box(settings.GAME_PIXEL_SIZE - 2, settings.GAME_PIXEL_SIZE - 2, colour, 1, 'black')
+        self.colour = self.setColour(colour)
 
-    def colour(self, colour):
-        self.colour = colour
-        self.surf.fill(colour)
+    def setColour(self, colour):
+        try:
+            self.colour = pygame.Color(colour)
+            self.surf.fill(self.colour)
+            return self.colour
+        except ValueError as e:
+            raise ValueError(f"Invalid color input: {colour}. Error: {e}")
 
     def bilt(self):
         self.surf.bilt(settings.GAME_X_OFFSET + self.x, settings.GAME_Y_OFFSET + self.y)

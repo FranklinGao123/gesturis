@@ -3,7 +3,7 @@ from Mino import Mino
 
 class Mino_J(Mino):
     def __init__(self):
-        super().create('blue')
+        super().create("#0072B2")
     
     def setXY(self, x ,y):
         # o

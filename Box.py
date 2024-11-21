@@ -31,7 +31,8 @@ class Box:
 
 
         self.surf_outline = pygame.Surface((width + outline * 2, height + outline * 2))
-        self.surf_outline.fill(outline_colour)
+        if outline_colour:
+            self.surf_outline.fill(outline_colour)
         self.surf = pygame.Surface((width, height))
         self.surf.fill(fill_colour)
 
@@ -45,3 +46,13 @@ class Box:
         """
         settings.display_surface.blit(self.surf_outline, (x, y))
         settings.display_surface.blit(self.surf, (x + self.outline, y + self.outline))
+
+    def fill(self, fill_colour):
+        """
+        Updates the fill color of the inner surface.
+
+        Parameters:
+            fill_colour (string): The new fill color.
+        """
+        self.fill_colour = fill_colour
+        self.surf.fill(fill_colour)
