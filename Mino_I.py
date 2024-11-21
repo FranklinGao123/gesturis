@@ -60,7 +60,7 @@ class Mino_I(Mino):
         self.tempB[2].x = self.b[0].x
         self.tempB[2].y = self.b[0].y - settings.GAME_PIXEL_SIZE
         self.tempB[3].x = self.b[0].x
-        self.tempB[3].y = self.b[0].y - settings.GAME_PIXEL_SIZE
+        self.tempB[3].y = self.b[0].y - 2 * settings.GAME_PIXEL_SIZE
 
         super().updateXY(3)
 

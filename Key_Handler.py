@@ -21,6 +21,27 @@ class Key_Handler:
                 return 1
             else:
                 return 0
+
+    def check_up(self):
+        self.cur = pygame.key.get_pressed()
+        if self.cur[pygame.K_UP] == 1 and self.prev[pygame.K_UP] == 0:
+            self.prev = self.cur
+            return 1
+        return 0
+
+    def check_space(self):
+        self.cur = pygame.key.get_pressed()
+        if self.cur[pygame.K_SPACE] == 1 and self.prev[pygame.K_SPACE] == 0:
+            self.prev = self.cur
+            return 1
+        return 0
+    
+    def check_hold(self):
+        self.cur = pygame.key.get_pressed()
+        if self.cur[pygame.K_c] == 1 and self.prev[pygame.K_c] == 0:
+            self.prev = self.cur
+            return 1
+        return 0
             
     def update(self):
         self.counter += 1

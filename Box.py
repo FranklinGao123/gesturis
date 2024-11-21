@@ -44,8 +44,8 @@ class Box:
             x (int): The x-coordinate of the screen.
             y (int): the y-coordinate fo the screen.
         """
-        settings.display_surface.blit(self.surf_outline, (x, y))
-        settings.display_surface.blit(self.surf, (x + self.outline, y + self.outline))
+        settings.display_surface.blit(self.surf_outline, (x - self.outline, y - self.outline))
+        settings.display_surface.blit(self.surf, (x, y))
 
     def fill(self, fill_colour):
         """

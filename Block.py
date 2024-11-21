@@ -23,3 +23,6 @@ class Block:
 
     def biltNext(self):
         self.surf.bilt(settings.NEXT_PIECE_X + self.x, settings.NEXT_PIECE_Y + self.y)
+
+    def biltHold(self):
+        self.surf.bilt(settings.HOLD_PIECE_X + self.x, settings.HOLD_PIECE_Y + self.y)

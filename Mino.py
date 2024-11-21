@@ -11,6 +11,7 @@ class Mino:
         self.b = list()
         self.tempB = list()
         self.direction = 1
+        self.hold = False
         for i in range(4):
             self.b.append(Block(c))
             self.tempB.append(Block(c))
@@ -33,39 +34,56 @@ class Mino:
     def checkMovementCollision(self):
         self.left, self.right, self.bottom = False, False, False
 
-        count = 0
         for i in self.b:
-            count +=1
-            if i.x == 0:
+            if i.x <= 0:
                 self.left = True
-        print(count)
+        
+        for j in settings.staticBlocks:
+            for i in self.b:
+                if i.x == j.x + settings.GAME_PIXEL_SIZE and i.y == j.y:
+                    self.left = True
 
         for i in self.b:
-            if i.x == settings.GAME_PIXEL_SIZE * 10:
+            if i.x >= settings.GAME_PIXEL_SIZE * 9:
                 self.right = True
+
+        for j in settings.staticBlocks:
+            for i in self.b:
+                if i.x == j.x - settings.GAME_PIXEL_SIZE and i.y == j.y:
+                    self.right = True
         
         for i in self.b:
-            if i.y == settings.GAME_PIXEL_SIZE * 20:
+            if i.y >= settings.GAME_PIXEL_SIZE * 19:
                 self.bottom = True
+        
+        for j in settings.staticBlocks:
+            for i in self.b:
+                if i.y == j.y - settings.GAME_PIXEL_SIZE and i.x == j.x:
+                    self.bottom = True
 
-    def checkRotationCollision(self):
+    def cannotRotate(self):
         for i in self.tempB:
             if i.x < 0:
                 return True
 
         for i in self.tempB:
-            if i.x > settings.GAME_PIXEL_SIZE * 10:
+            if i.x > settings.GAME_PIXEL_SIZE * 9:
                 return True
         
         for i in self.tempB:
-            if i.y > settings.GAME_PIXEL_SIZE * 20:
+            if i.y > settings.GAME_PIXEL_SIZE * 19:
                 return True
+
+        for j in settings.staticBlocks:
+            for i in self.tempB:
+                if i.y == j.y and i.x == j.x:
+                    return True
 
     def setXY():
         pass
 
     def updateXY(self, direction):
-        if not self.checkRotationCollision():
+        if not self.cannotRotate():
             self.direction = direction
             self.b[0].x = self.tempB[0].x
             self.b[0].y = self.tempB[0].y
@@ -78,7 +96,7 @@ class Mino:
 
     def update(self):
         self.auto_drop_counter += 1
-        if settings.KEYHANDLER.check_key(pygame.K_UP):
+        if settings.KEYHANDLER.check_up():
             options = {
                 1: self.getDirection2,
                 2: self.getDirection3,
@@ -93,9 +111,7 @@ class Mino:
             self.b[0].x -= settings.GAME_PIXEL_SIZE
             self.b[1].x -= settings.GAME_PIXEL_SIZE
             self.b[2].x -= settings.GAME_PIXEL_SIZE
-            self.b[3].x -= settings.GAME_PIXEL_SIZE 
-        else:
-            print(self.left)
+            self.b[3].x -= settings.GAME_PIXEL_SIZE
 
         if not self.right and settings.KEYHANDLER.check_key(pygame.K_RIGHT):
             self.b[0].x += settings.GAME_PIXEL_SIZE
@@ -110,7 +126,23 @@ class Mino:
             self.b[3].y += settings.GAME_PIXEL_SIZE
             self.auto_drop_counter = 0
         elif self.bottom:
+            if self.auto_drop_counter >= settings.DROP_INTERVAL:
+                self.active = False
+
+        if settings.KEYHANDLER.check_space():
+            while not self.bottom:
+                self.b[0].y += settings.GAME_PIXEL_SIZE
+                self.b[1].y += settings.GAME_PIXEL_SIZE
+                self.b[2].y += settings.GAME_PIXEL_SIZE
+                self.b[3].y += settings.GAME_PIXEL_SIZE
+                self.checkMovementCollision()
             self.active = False
+        
+        if settings.KEYHANDLER.check_hold():
+            if not settings.held:
+                self.hold = True
+                settings.held = True
+
 
     def bilt(self):
         for i in self.b:
@@ -119,3 +151,7 @@ class Mino:
     def biltNext(self):
         for i in self.b:
             i.biltNext()
+
+    def biltHold(self):
+        for i in self.b:
+            i.biltHold()
