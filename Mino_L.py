@@ -52,12 +52,12 @@ class Mino_L(Mino):
         # o
         self.tempB[0].x = self.b[0].x
         self.tempB[0].y = self.b[0].y
-        self.tempB[1].x = self.b[0].x - settings.GAME_PIXEL_SIZE
+        self.tempB[1].x = self.b[0].x + settings.GAME_PIXEL_SIZE
         self.tempB[1].y = self.b[0].y 
         self.tempB[2].x = self.b[0].x - settings.GAME_PIXEL_SIZE
-        self.tempB[2].y = self.b[0].y + settings.GAME_PIXEL_SIZE
-        self.tempB[3].x = self.b[0].x + settings.GAME_PIXEL_SIZE
-        self.tempB[3].y = self.b[0].y 
+        self.tempB[2].y = self.b[0].y
+        self.tempB[3].x = self.b[0].x - settings.GAME_PIXEL_SIZE
+        self.tempB[3].y = self.b[0].y + settings.GAME_PIXEL_SIZE
 
         super().updateXY(3)
 
@@ -67,11 +67,11 @@ class Mino_L(Mino):
         #   o
         self.tempB[0].x = self.b[0].x
         self.tempB[0].y = self.b[0].y
-        self.tempB[1].x = self.b[0].x - settings.GAME_PIXEL_SIZE
-        self.tempB[1].y = self.b[0].y - settings.GAME_PIXEL_SIZE
-        self.tempB[2].x = self.b[0].x 
+        self.tempB[1].x = self.b[0].x
+        self.tempB[1].y = self.b[0].y + settings.GAME_PIXEL_SIZE
+        self.tempB[2].x = self.b[0].x
         self.tempB[2].y = self.b[0].y - settings.GAME_PIXEL_SIZE
-        self.tempB[3].x = self.b[0].x 
-        self.tempB[3].y = self.b[0].y + settings.GAME_PIXEL_SIZE
+        self.tempB[3].x = self.b[0].x - settings.GAME_PIXEL_SIZE
+        self.tempB[3].y = self.b[0].y - settings.GAME_PIXEL_SIZE
 
         super().updateXY(4)
