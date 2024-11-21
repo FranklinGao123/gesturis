@@ -45,7 +45,7 @@ next_piece = Box(settings.GAME_PIXEL_SIZE * 6, settings.GAME_PIXEL_SIZE * 6, 'wh
 staticBlocks = list()
 
 # tetris pieces
-current = Mino_L()
+current = Mino_J()
 current.setXY(settings.START_LOCATION_X, settings.START_LOCATION_Y)
 next = Mino_L()
 next.setXY(0, 0)
