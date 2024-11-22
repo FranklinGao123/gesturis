@@ -149,6 +149,11 @@ while running:
 
     settings.display_surface.blit(gestures_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 2.5), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 1)))
     settings.display_surface.blit(right_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
+    settings.display_surface.blit(left_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
+    settings.display_surface.blit(rotate_right_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
+    settings.display_surface.blit(rotate_left_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
+    settings.display_surface.blit(hold_swap_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
+    settings.display_surface.blit(drop_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
 
 
     current.bilt()
