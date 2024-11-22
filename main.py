@@ -1,6 +1,7 @@
 import pygame
 import random
 import settings
+import os
 from Box import Box
 from Mino_L import Mino_L
 from Mino_J import Mino_J
@@ -65,17 +66,56 @@ def checkLineClear():
         
 
 
-
 # General Setup
 pygame.init()
 running = True
 
-# tetris grid 20x10
-game_board = Box(settings.GAME_WIDTH, settings.GAME_HEIGHT, 'white', 10, 'lightgray')
-next_piece = Box(settings.GAME_PIXEL_SIZE * 6, settings.GAME_PIXEL_SIZE * 6, 'white', 10, 'lightgray')
-hold_piece = Box(settings.GAME_PIXEL_SIZE * 6, settings.GAME_PIXEL_SIZE * 6, 'white', 10, 'lightgray')
+# Font & Text
+font = pygame.font.SysFont("monaco", 18)  # Default font
+bold_font = pygame.font.SysFont("monaco", 20, bold=True)  # Default font, size 48
 
-# tetris pieces
+if os.name == "posix":  # macOS or Linux
+    emoji_font = pygame.font.SysFont("arial", 18)  # macOS
+    # For Linux, use a path to an emoji font like Noto Color Emoji
+    # font = pygame.font.Font("/usr/share/fonts/noto/NotoColorEmoji.ttf", 48)
+elif os.name == "nt":  # Windows
+    emoji_font = pygame.font.SysFont("segoeuiemoji", 18)
+else:
+    raise Exception("Unsupported platform for emoji rendering")
+
+
+next_text = bold_font.render("NEXT", True, (255, 255, 255))
+hold_text = bold_font.render("HOLD", True, (255, 255, 255))
+
+score_text = font.render("SCORE:", True, (255, 255, 255))
+lines_text = font.render("LINES:", True, (255, 255, 255))
+mode_text = font.render("MODE:", True, (255, 255, 255))
+
+gestures_text = bold_font.render("GESTURES:", True, (255, 255, 255))
+right_text = emoji_font.render("RIGHT: ", True, (255, 255, 255))
+left_text = emoji_font.render("LEFT: ", True, (255, 255, 255))
+rotate_right_text = emoji_font.render("ROTATE RIGHT: ", True, (255, 255, 255))
+rotate_left_text = emoji_font.render("ROTATE LEFT: ", True, (255, 255, 255))
+hold_swap_text = emoji_font.render("HOLD/SWAP: ", True, (255, 255, 255))
+drop_text = emoji_font.render("DROP: ", True, (255, 255, 255))
+
+# right_text = emoji_font.render("RIGHT: ✌🏻", True, (255, 255, 255))
+# left_text = emoji_font.render("LEFT: ☝🏻", True, (255, 255, 255))
+# rotate_right_text = emoji_font.render("ROTATE RIGHT: 👍🏻", True, (255, 255, 255))
+# rotate_left_text = emoji_font.render("ROTATE LEFT: 👎🏻", True, (255, 255, 255))
+# hold_swap_text = emoji_font.render("HOLD/SWAP: 🤟🏻", True, (255, 255, 255))
+# drop_text = emoji_font.render("DROP: 🖐🏻", True, (255, 255, 255))
+
+# Board + Boxes (tetris grid 20x10)
+game_board = Box(settings.GAME_WIDTH + 25, settings.GAME_HEIGHT + 25, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
+next_box = Box(settings.GAME_PIXEL_SIZE * 6, settings.GAME_PIXEL_SIZE * 6, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
+hold_box = Box(settings.GAME_PIXEL_SIZE * 6, settings.GAME_PIXEL_SIZE * 6, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
+stats_box = Box(settings.GAME_PIXEL_SIZE * 9, settings.GAME_PIXEL_SIZE * 6, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
+gestures_box = Box(settings.GAME_PIXEL_SIZE * 9, settings.GAME_PIXEL_SIZE * 12, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
+
+staticBlocks = list()
+
+# Tetris pieces
 current = Mino_J()
 current.setXY(settings.START_LOCATION_X, settings.START_LOCATION_Y)
 current.setActivePiece()
@@ -89,13 +129,28 @@ while running:
         if event.type == pygame.QUIT:
             running = False
             
-    settings.display_surface.fill('white')
-    game_board.bilt(settings.WINDOW_WIDTH/2 - settings.GAME_WIDTH/2 - 1, settings.WINDOW_HEIGHT/2 - settings.GAME_HEIGHT/2 - 1)
-    next_piece.bilt(settings.NEXT_PIECE_X, settings.NEXT_PIECE_Y)
-    hold_piece.bilt(settings.HOLD_PIECE_X, settings.HOLD_PIECE_Y)
+    settings.display_surface.fill('black')
 
-    for i in settings.staticBlocks:
-        i.bilt()
+
+    # Display board + boxes
+    game_board.bilt(settings.WINDOW_WIDTH/2 - settings.GAME_WIDTH/2 - settings.BOX_LINE_WIDTH, settings.WINDOW_HEIGHT/2 - settings.GAME_HEIGHT/2 - settings.BOX_LINE_WIDTH)
+    next_box.bilt(settings.NEXT_BOX_X, settings.NEXT_BOX_Y)
+    hold_box.bilt(settings.HOLD_BOX_X, settings.HOLD_BOX_Y)
+    stats_box.bilt(settings.STATS_BOX_X, settings.STATS_BOX_Y)
+    gestures_box.bilt(settings.GESTURES_BOX_X, settings.GESTURES_BOX_Y)
+
+    # Display Text
+    settings.display_surface.blit(next_text, (settings.NEXT_BOX_X  + (settings.GAME_PIXEL_SIZE * 2.5), settings.NEXT_BOX_Y + (settings.GAME_PIXEL_SIZE * .75)))
+    settings.display_surface.blit(hold_text, (settings.HOLD_BOX_X  + (settings.GAME_PIXEL_SIZE * 2.45), settings.HOLD_BOX_Y + (settings.GAME_PIXEL_SIZE * .75)))
+
+    settings.display_surface.blit(score_text, (settings.STATS_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.STATS_BOX_Y + (settings.GAME_PIXEL_SIZE * 1)))
+    settings.display_surface.blit(lines_text, (settings.STATS_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.STATS_BOX_Y + (settings.GAME_PIXEL_SIZE * 3)))
+    settings.display_surface.blit(mode_text, (settings.STATS_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.STATS_BOX_Y + (settings.GAME_PIXEL_SIZE * 5)))
+
+    settings.display_surface.blit(gestures_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 2.5), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 1)))
+    settings.display_surface.blit(right_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
+
+
     current.bilt()
     next.biltNext()
     if settings.hold:
