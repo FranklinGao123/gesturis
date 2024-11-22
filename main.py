@@ -140,27 +140,25 @@ while running:
     gestures_box.bilt(settings.GESTURES_BOX_X, settings.GESTURES_BOX_Y)
 
     # Display Text
-    settings.display_surface.blit(next_text, (settings.NEXT_BOX_X  + (settings.GAME_PIXEL_SIZE * 2.5), settings.NEXT_BOX_Y + (settings.GAME_PIXEL_SIZE * .75)))
-    settings.display_surface.blit(hold_text, (settings.HOLD_BOX_X  + (settings.GAME_PIXEL_SIZE * 2.45), settings.HOLD_BOX_Y + (settings.GAME_PIXEL_SIZE * .75)))
+    settings.display_surface.blit(next_text, (settings.NEXT_BOX_X + (settings.GAME_PIXEL_SIZE * 2), settings.NEXT_BOX_Y + (settings.GAME_PIXEL_SIZE * .5)))
+    settings.display_surface.blit(hold_text, (settings.HOLD_BOX_X + (settings.GAME_PIXEL_SIZE * 1.9), settings.HOLD_BOX_Y + (settings.GAME_PIXEL_SIZE * .5)))
 
-    settings.display_surface.blit(score_text, (settings.STATS_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.STATS_BOX_Y + (settings.GAME_PIXEL_SIZE * 1)))
-    settings.display_surface.blit(lines_text, (settings.STATS_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.STATS_BOX_Y + (settings.GAME_PIXEL_SIZE * 3)))
-    settings.display_surface.blit(mode_text, (settings.STATS_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.STATS_BOX_Y + (settings.GAME_PIXEL_SIZE * 5)))
+    settings.display_surface.blit(score_text, (settings.STATS_BOX_X + (settings.GAME_PIXEL_SIZE * .75), settings.STATS_BOX_Y + (settings.GAME_PIXEL_SIZE * .5)))
+    settings.display_surface.blit(lines_text, (settings.STATS_BOX_X + (settings.GAME_PIXEL_SIZE * .75), settings.STATS_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
+    settings.display_surface.blit(mode_text, (settings.STATS_BOX_X + (settings.GAME_PIXEL_SIZE * .75), settings.STATS_BOX_Y + (settings.GAME_PIXEL_SIZE * 4.5)))
 
-    settings.display_surface.blit(gestures_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 2.5), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 1)))
-    settings.display_surface.blit(right_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
-    settings.display_surface.blit(left_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
-    settings.display_surface.blit(rotate_right_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
-    settings.display_surface.blit(rotate_left_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
-    settings.display_surface.blit(hold_swap_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
-    settings.display_surface.blit(drop_text, (settings.GESTURES_BOX_X  + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
-
+    settings.display_surface.blit(gestures_text, (settings.GESTURES_BOX_X + (settings.GAME_PIXEL_SIZE * 2.5), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * .5)))
+    settings.display_surface.blit(right_text, (settings.GESTURES_BOX_X + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
+    settings.display_surface.blit(left_text, (settings.GESTURES_BOX_X + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 4)))
+    settings.display_surface.blit(rotate_right_text, (settings.GESTURES_BOX_X + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 5.5)))
+    settings.display_surface.blit(rotate_left_text, (settings.GESTURES_BOX_X + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 7)))
+    settings.display_surface.blit(hold_swap_text, (settings.GESTURES_BOX_X + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 8.5)))
+    settings.display_surface.blit(drop_text, (settings.GESTURES_BOX_X + (settings.GAME_PIXEL_SIZE * 1), settings.GESTURES_BOX_Y + (settings.GAME_PIXEL_SIZE * 10)))
 
     current.bilt()
     next.biltNext()
     if settings.hold:
         settings.hold.biltHold()
-
 
     
     pygame.display.update()
