@@ -11,70 +11,6 @@ from Mino_S import Mino_S
 from Mino_Z import Mino_Z
 from Mino_T import Mino_T
 
-# General Setup
-pygame.init()
-running = True
-score = 0
-lines = 0
-mode = "SINGLE" # TODO: update when we deal with mode switching
-
-# Font & Text
-font = pygame.font.SysFont("monaco", 18)  # Default font
-bold_font = pygame.font.SysFont("monaco", 20, bold=True)  # Default font, size 48
-
-if os.name == "posix":  # macOS or Linux
-    emoji_font = pygame.font.SysFont("arial", 18)  # macOS
-    # For Linux, use a path to an emoji font like Noto Color Emoji
-    # font = pygame.font.Font("/usr/share/fonts/noto/NotoColorEmoji.ttf", 48)
-elif os.name == "nt":  # Windows
-    emoji_font = pygame.font.SysFont("segoeuiemoji", 18)
-else:
-    raise Exception("Unsupported platform for emoji rendering")
-
-next_text = bold_font.render("NEXT", True, (255, 255, 255))
-hold_text = bold_font.render("HOLD", True, (255, 255, 255))
-
-score_text = font.render(f"SCORE: {score}", True, (255, 255, 255))
-lines_text = font.render(f"LINES: {lines}", True, (255, 255, 255))
-mode_text = font.render(f"MODE: {mode}", True, (255, 255, 255))
-
-gestures_text = bold_font.render("GESTURES:", True, (255, 255, 255))
-right_text = font.render("RIGHT: ", True, (255, 255, 255))
-left_text = font.render("LEFT: ", True, (255, 255, 255))
-rotate_right_text = font.render("ROTATE RIGHT: ", True, (255, 255, 255))
-rotate_left_text = font.render("ROTATE LEFT: ", True, (255, 255, 255))
-hold_swap_text = font.render("HOLD/SWAP: ", True, (255, 255, 255))
-drop_text = font.render("DROP: ", True, (255, 255, 255))
-
-# Load images
-victory_hand = pygame.image.load("images/victory_hand.png")
-scaled_victory_hand = pygame.transform.scale(victory_hand, (25, 25))
-
-point_hand = pygame.image.load("images/point_hand.png")
-scaled_point_hand = pygame.transform.scale(point_hand, (25, 25))
-
-thumbs_up = pygame.image.load("images/thumbs_up.png")
-scaled_thumbs_up = pygame.transform.scale(thumbs_up, (25, 25))
-
-thumbs_down = pygame.image.load("images/thumbs_down.png")
-scaled_thumbs_down = pygame.transform.scale(thumbs_down, (25, 25))
-
-open_palm = pygame.image.load("images/open_palm.png")
-scaled_open_palm = pygame.transform.scale(open_palm, (25, 25))
-
-i_love_you = pygame.image.load("images/i_love_you.png")
-scaled_i_love_you = pygame.transform.scale(i_love_you, (25, 25))
-
-
-# Board + Boxes (tetris grid 20x10)
-game_board = Box(settings.GAME_WIDTH + 25, settings.GAME_HEIGHT + 25, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
-next_box = Box(settings.GAME_PIXEL_SIZE * 6, settings.GAME_PIXEL_SIZE * 7, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
-hold_box = Box(settings.GAME_PIXEL_SIZE * 6, settings.GAME_PIXEL_SIZE * 6, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
-stats_box = Box(settings.GAME_PIXEL_SIZE * 9, settings.GAME_PIXEL_SIZE * 6, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
-gestures_box = Box(settings.GAME_PIXEL_SIZE * 9, settings.GAME_PIXEL_SIZE * 12, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
-
-staticBlocks = list()
-
 def pickPiece():
     '''
     0 - O piece
@@ -146,6 +82,69 @@ def checkLineClear():
     elif total_lines_cleared == 4:
         score += 80
 
+# General Setup
+pygame.init()
+running = True
+score = 0
+lines = 0
+mode = "SINGLE" # TODO: update when we deal with mode switching
+
+# Font & Text
+font = pygame.font.SysFont("monaco", 18)  # Default font
+bold_font = pygame.font.SysFont("monaco", 20, bold=True)  # Default font, size 48
+
+if os.name == "posix":  # macOS or Linux
+    emoji_font = pygame.font.SysFont("arial", 18)  # macOS
+    # For Linux, use a path to an emoji font like Noto Color Emoji
+    # font = pygame.font.Font("/usr/share/fonts/noto/NotoColorEmoji.ttf", 48)
+elif os.name == "nt":  # Windows
+    emoji_font = pygame.font.SysFont("segoeuiemoji", 18)
+else:
+    raise Exception("Unsupported platform for emoji rendering")
+
+next_text = bold_font.render("NEXT", True, (255, 255, 255))
+hold_text = bold_font.render("HOLD", True, (255, 255, 255))
+
+score_text = font.render(f"SCORE: {score}", True, (255, 255, 255))
+lines_text = font.render(f"LINES: {lines}", True, (255, 255, 255))
+mode_text = font.render(f"MODE: {mode}", True, (255, 255, 255))
+
+gestures_text = bold_font.render("GESTURES:", True, (255, 255, 255))
+right_text = font.render("RIGHT: ", True, (255, 255, 255))
+left_text = font.render("LEFT: ", True, (255, 255, 255))
+rotate_right_text = font.render("ROTATE RIGHT: ", True, (255, 255, 255))
+rotate_left_text = font.render("ROTATE LEFT: ", True, (255, 255, 255))
+hold_swap_text = font.render("HOLD/SWAP: ", True, (255, 255, 255))
+drop_text = font.render("DROP: ", True, (255, 255, 255))
+
+# Load images
+victory_hand = pygame.image.load("images/victory_hand.png")
+scaled_victory_hand = pygame.transform.scale(victory_hand, (25, 25))
+
+point_hand = pygame.image.load("images/point_hand.png")
+scaled_point_hand = pygame.transform.scale(point_hand, (25, 25))
+
+thumbs_up = pygame.image.load("images/thumbs_up.png")
+scaled_thumbs_up = pygame.transform.scale(thumbs_up, (25, 25))
+
+thumbs_down = pygame.image.load("images/thumbs_down.png")
+scaled_thumbs_down = pygame.transform.scale(thumbs_down, (25, 25))
+
+open_palm = pygame.image.load("images/open_palm.png")
+scaled_open_palm = pygame.transform.scale(open_palm, (25, 25))
+
+i_love_you = pygame.image.load("images/i_love_you.png")
+scaled_i_love_you = pygame.transform.scale(i_love_you, (25, 25))
+
+# Board + Boxes (tetris grid 20x10)
+game_board = Box(settings.GAME_WIDTH + 25, settings.GAME_HEIGHT + 25, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
+next_box = Box(settings.GAME_PIXEL_SIZE * 6, settings.GAME_PIXEL_SIZE * 7, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
+hold_box = Box(settings.GAME_PIXEL_SIZE * 6, settings.GAME_PIXEL_SIZE * 6, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
+stats_box = Box(settings.GAME_PIXEL_SIZE * 9, settings.GAME_PIXEL_SIZE * 6, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
+gestures_box = Box(settings.GAME_PIXEL_SIZE * 9, settings.GAME_PIXEL_SIZE * 12, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
+
+staticBlocks = list()
+
 # Tetris pieces
 current_piece = Mino_J()
 current_piece.setXY(settings.START_LOCATION_X, settings.START_LOCATION_Y)
@@ -153,8 +152,8 @@ current_piece.setActivePiece()
 next_piece = pickPiece()
 next_piece.setXY(0,0)
 
+# MAIN GAME LOOP
 while running:
-    # event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -172,6 +171,8 @@ while running:
     settings.display_surface.blit(next_text, (settings.NEXT_BOX_X + (settings.GAME_PIXEL_SIZE * 2), settings.NEXT_BOX_Y + (settings.GAME_PIXEL_SIZE * .5)))
     settings.display_surface.blit(hold_text, (settings.HOLD_BOX_X + (settings.GAME_PIXEL_SIZE * 1.9), settings.HOLD_BOX_Y + (settings.GAME_PIXEL_SIZE * .5)))
 
+    score_text = font.render(f"SCORE: {score}", True, (255, 255, 255))
+    lines_text = font.render(f"LINES: {lines}", True, (255, 255, 255))
     settings.display_surface.blit(score_text, (settings.STATS_BOX_X + (settings.GAME_PIXEL_SIZE * .75), settings.STATS_BOX_Y + (settings.GAME_PIXEL_SIZE * .5)))
     settings.display_surface.blit(lines_text, (settings.STATS_BOX_X + (settings.GAME_PIXEL_SIZE * .75), settings.STATS_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
     settings.display_surface.blit(mode_text, (settings.STATS_BOX_X + (settings.GAME_PIXEL_SIZE * .75), settings.STATS_BOX_Y + (settings.GAME_PIXEL_SIZE * 4.5)))
@@ -192,6 +193,8 @@ while running:
     settings.display_surface.blit(scaled_open_palm, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 4.5), settings.HOLD_SWAP_TEXT_Y))
     settings.display_surface.blit(scaled_i_love_you, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 2.5), settings.DROP_TEXT_Y))
 
+    for i in settings.staticBlocks:
+        i.blit()
     current_piece.blit()
     next_piece.blitNext()
     if settings.hold:
