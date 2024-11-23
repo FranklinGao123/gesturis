@@ -36,7 +36,7 @@ class Box:
         self.surf = pygame.Surface((width, height))
         self.surf.fill(fill_colour)
 
-    def bilt(self, x, y):
+    def blit(self, x, y):
         """
         Printing the box onto the screen
 
