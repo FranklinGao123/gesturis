@@ -1,5 +1,16 @@
 import pygame
 from Key_Handler import Key_Handler
+from enum import Enum
+
+class GameState(Enum):
+    MAIN_MENU = "main menu"
+    SINGLEPLAYER = "singleplayer"
+    MULTIPLAYER = "multiplayer"
+    PAUSE = "pause"
+    SETTINGS = "settings"
+    INSTRUCTIONS_1 = "instructions1"
+    INSTRUCTIONS_2 = "instructions2"
+    QUIT = "quit"
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
 display_surface = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
