@@ -192,10 +192,10 @@ while running:
     settings.display_surface.blit(scaled_open_palm, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 4.5), settings.HOLD_SWAP_TEXT_Y))
     settings.display_surface.blit(scaled_i_love_you, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 2.5), settings.DROP_TEXT_Y))
 
-    current_piece.bilt()
-    next_piece.biltNext()
+    current_piece.blit()
+    next_piece.blitNext()
     if settings.hold:
-        settings.hold.biltHold()
+        settings.hold.blitHold()
     
     pygame.display.update()
     current_piece.update()

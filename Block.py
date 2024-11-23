@@ -18,11 +18,11 @@ class Block:
         except ValueError as e:
             raise ValueError(f"Invalid color input: {colour}. Error: {e}")
 
-    def bilt(self):
+    def blit(self):
         self.surf.blit(settings.GAME_X_OFFSET + self.x, settings.GAME_Y_OFFSET + self.y)
 
-    def biltNext(self):
+    def blitNext(self):
         self.surf.blit(settings.NEXT_PIECE_X + self.x, settings.NEXT_PIECE_Y + self.y)
 
-    def biltHold(self):
+    def blitHold(self):
         self.surf.blit(settings.HOLD_PIECE_X + self.x, settings.HOLD_PIECE_Y + self.y)

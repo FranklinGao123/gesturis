@@ -144,14 +144,14 @@ class Mino:
                 settings.held = True
 
 
-    def bilt(self):
+    def blit(self):
         for i in self.b:
-            i.bilt()
+            i.blit()
     
-    def biltNext(self):
+    def blitNext(self):
         for i in self.b:
-            i.biltNext()
+            i.blitNext()
 
-    def biltHold(self):
+    def blitHold(self):
         for i in self.b:
-            i.biltHold()
+            i.blitHold()
