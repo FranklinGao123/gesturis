@@ -192,8 +192,8 @@ def runGame(curr_state):
         settings.display_surface.blit(drop_text, (settings.INDIV_GESTURES_TEXT_X, settings.DROP_TEXT_Y))
 
         # Display images for gestures
-        settings.display_surface.blit(scaled_victory_hand, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 2.75), settings.RIGHT_TEXT_Y))
-        settings.display_surface.blit(scaled_point_hand, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 2.55), settings.LEFT_TEXT_Y))
+        settings.display_surface.blit(scaled_point_hand, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 2.75), settings.RIGHT_TEXT_Y))
+        settings.display_surface.blit(scaled_victory_hand, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 2.55), settings.LEFT_TEXT_Y))
         settings.display_surface.blit(scaled_thumbs_up, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 6), settings.ROTATE_RIGHT_TEXT_Y))
         settings.display_surface.blit(scaled_thumbs_down, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 5.75), settings.ROTATE_LEFT_TEXT_Y))
         settings.display_surface.blit(scaled_open_palm, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 4.5), settings.HOLD_SWAP_TEXT_Y))

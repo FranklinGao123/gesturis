@@ -21,6 +21,102 @@ def draw_button(font, rect, text, is_hovered=False):
     settings.display_surface.blit(button_text, text_rect)
 
 
+# Handle clicks for menu, back, and next buttons
+def handleMenuClicks(menu_button, back_button, next_button, mouse_x, mouse_y, curr_state, back_state=None, next_state=None):
+    if menu_button.collidepoint(mouse_x, mouse_y):
+        return settings.GameState.MAIN_MENU
+    elif back_state and back_button.collidepoint(mouse_x, mouse_y):
+        return back_state
+    elif next_state and next_button.collidepoint(mouse_x, mouse_y):
+        return next_state
+    return curr_state
+
+def renderCommonInstructionElements(menu_button, back_button, next_button):
+
+    MENU_BUTTON_WIDTH = 150
+    MENU_BUTTON_HEIGHT = 55
+    MENU_BUTTON_X, MENU_BUTTON_Y = settings.GAME_PIXEL_SIZE * 2.5, settings.GAME_PIXEL_SIZE * 2
+
+    ARROW_BUTTON_WIDTH = 75
+    ARROW_BUTTON_HEIGHT = 43
+    ARROW_BUTTON_Y = settings.WINDOW_HEIGHT - settings.GAME_PIXEL_SIZE * 3.5
+    NEXT_BUTTON_X = settings.WINDOW_WIDTH - settings.GAME_PIXEL_SIZE * 6
+    BACK_BUTTON_X = NEXT_BUTTON_X - ARROW_BUTTON_WIDTH - settings.GAME_PIXEL_SIZE*.5
+
+    TEXT_LEFT_ALIGNMENT = settings.GAME_PIXEL_SIZE * 3.5
+
+    SUBTITLE_TEXT_Y = settings.GAME_PIXEL_SIZE * 5
+
+    title_font = pygame.font.Font(settings.FONT_PATH, 80)
+    subtitle_font = pygame.font.Font(settings.FONT_PATH, 40)
+    text_font = pygame.font.SysFont("courier", 16)
+    button_font = pygame.font.Font(settings.FONT_PATH, 23)
+
+    # Text
+    menu_text = button_font.render("<- MENU", True, settings.BUTTON_TEXT_COLOR)
+    back_text = button_font.render("<-", True, settings.BUTTON_TEXT_COLOR)
+    next_text = button_font.render("->", True, settings.BUTTON_TEXT_COLOR)
+
+    # Get text positions within buttons
+    menu_text_width, menu_text_height = menu_text.get_size()
+    menu_text_x = menu_button.centerx - menu_text_width // 2
+    menu_text_y = menu_button.centery - menu_text_height // 2
+
+    back_text_width, back_text_height = back_text.get_size()
+    back_text_x = back_button.centerx - back_text_width // 2
+    back_text_y = back_button.centery - back_text_height // 2
+
+    next_text_width, next_text_height = next_text.get_size()
+    next_text_x = next_button.centerx - next_text_width // 2
+    next_text_y = next_button.centery - next_text_height // 2
+
+    # Calculate positioning for title
+    total_width = sum(title_font.render(c, True, settings.GESTURIS_COLOURS[0]).get_width() for c in "GESTURIS")
+    title_x = (settings.WINDOW_WIDTH - total_width) // 2 # Set initial x position so that text is centered
+
+    settings.display_surface.fill(settings.MENU_BG_COLOR)
+
+    # Title
+    total_width = sum(title_font.render(c, True, settings.GESTURIS_COLOURS[0]).get_width() for c in "GESTURIS")
+    title_x = (settings.WINDOW_WIDTH - total_width) // 2
+    renderTitle(title_font, "GESTURIS", title_x, settings.GAME_PIXEL_SIZE * 0.6)
+
+    # Subtitle
+    subtitle_surface = subtitle_font.render("HOW TO PLAY", True, (255, 255, 255))
+    settings.display_surface.blit(subtitle_surface, (settings.GAME_PIXEL_SIZE * 3.5, SUBTITLE_TEXT_Y))
+
+    # Render buttons
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+
+    def renderButton(button, text_surface, x, y):
+        if button.collidepoint(mouse_x, mouse_y):
+            pygame.draw.rect(settings.display_surface, settings.BUTTON_HOVER_COLOR, button, 0, settings.BUTTON_CORNER_RADIUS)
+        else:
+            pygame.draw.rect(settings.display_surface, settings.BUTTON_COLOR, button)
+        pygame.draw.rect(settings.display_surface, settings.BUTTON_OUTLINE_COLOR, button, settings.BUTTON_OUTLINE_WIDTH, settings.BUTTON_CORNER_RADIUS)
+        settings.display_surface.blit(text_surface, (x, y))
+
+    # Create text surfaces
+    menu_text = button_font.render("<- MENU", True, settings.BUTTON_TEXT_COLOR)
+    back_text = button_font.render("<-", True, settings.BUTTON_TEXT_COLOR)
+    next_text = button_font.render("->", True, settings.BUTTON_TEXT_COLOR)
+
+    # Draw buttons
+    menu_text_x = menu_button.centerx - menu_text.get_width() // 2
+    menu_text_y = menu_button.centery - menu_text.get_height() // 2
+    renderButton(menu_button, menu_text, menu_text_x, menu_text_y)
+
+    back_text_x = back_button.centerx - back_text.get_width() // 2
+    back_text_y = back_button.centery - back_text.get_height() // 2
+    renderButton(back_button, back_text, back_text_x, back_text_y)
+
+    next_text_x = next_button.centerx - next_text.get_width() // 2
+    next_text_y = next_button.centery - next_text.get_height() // 2
+    renderButton(next_button, next_text, next_text_x, next_text_y)
+
+    # Check for button clicks and update state as needed
+
+
 # This method will return a menu action
 def displayInstructionsPage1(curr_state):
 
@@ -48,93 +144,38 @@ def displayInstructionsPage1(curr_state):
         "",
         "Dropping a block will cause the current block to move all the way down until collision happens."
     ]
-
-    MENU_BUTTON_WIDTH = 150
-    MENU_BUTTON_HEIGHT = 55
-    MENU_BUTTON_X, MENU_BUTTON_Y = settings.GAME_PIXEL_SIZE * 2.5, settings.GAME_PIXEL_SIZE * 2
-
-    ARROW_BUTTON_WIDTH = 75
-    ARROW_BUTTON_HEIGHT = 43
-    ARROW_BUTTON_Y = settings.WINDOW_HEIGHT - settings.GAME_PIXEL_SIZE * 3.5
-    NEXT_BUTTON_X = settings.WINDOW_WIDTH - settings.GAME_PIXEL_SIZE * 6
-    BACK_BUTTON_X = NEXT_BUTTON_X - ARROW_BUTTON_WIDTH - settings.GAME_PIXEL_SIZE*.5
-
     TEXT_LEFT_ALIGNMENT = settings.GAME_PIXEL_SIZE * 3.5
-
     SUBTITLE_TEXT_Y = settings.GAME_PIXEL_SIZE * 5
 
-    title_font = pygame.font.Font(settings.FONT_PATH, 80)
-    subtitle_font = pygame.font.Font(settings.FONT_PATH, 40)
     text_font = pygame.font.SysFont("courier", 16)
-    button_font = pygame.font.Font(settings.FONT_PATH, 23)
 
-    # Text
-    menu_text = button_font.render("<- MENU", True, settings.BUTTON_TEXT_COLOR)
-    back_text = button_font.render("<-", True, settings.BUTTON_TEXT_COLOR)
-    next_text = button_font.render("->", True, settings.BUTTON_TEXT_COLOR)
+    # Button setup
+    MENU_BUTTON_X, MENU_BUTTON_Y = settings.GAME_PIXEL_SIZE * 2.5, settings.GAME_PIXEL_SIZE * 2
+    MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT = 150, 55
 
-    # Buttons
+    ARROW_BUTTON_WIDTH, ARROW_BUTTON_HEIGHT = 75, 43
+    ARROW_BUTTON_Y = settings.WINDOW_HEIGHT - settings.GAME_PIXEL_SIZE * 3.5
+    NEXT_BUTTON_X = settings.WINDOW_WIDTH - settings.GAME_PIXEL_SIZE * 6
+    BACK_BUTTON_X = NEXT_BUTTON_X - ARROW_BUTTON_WIDTH - settings.GAME_PIXEL_SIZE * 0.5
+
     menu_button = pygame.Rect(MENU_BUTTON_X, MENU_BUTTON_Y, MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT)
     back_button = pygame.Rect(BACK_BUTTON_X, ARROW_BUTTON_Y, ARROW_BUTTON_WIDTH, ARROW_BUTTON_HEIGHT)
     next_button = pygame.Rect(NEXT_BUTTON_X, ARROW_BUTTON_Y, ARROW_BUTTON_WIDTH, ARROW_BUTTON_HEIGHT)
 
-    # Get text positions within buttons
-    menu_text_width, menu_text_height = menu_text.get_size()
-    menu_text_x = menu_button.centerx - menu_text_width // 2
-    menu_text_y = menu_button.centery - menu_text_height // 2
-
-    back_text_width, back_text_height = back_text.get_size()
-    back_text_x = back_button.centerx - back_text_width // 2
-    back_text_y = back_button.centery - back_text_height // 2
-
-    next_text_width, next_text_height = next_text.get_size()
-    next_text_x = next_button.centerx - next_text_width // 2
-    next_text_y = next_button.centery - next_text_height // 2
-
-    # Calculate positioning for title
-    total_width = sum(title_font.render(c, True, settings.GESTURIS_COLOURS[0]).get_width() for c in "GESTURIS")
-    title_x = (settings.WINDOW_WIDTH - total_width) // 2 # Set initial x position so that text is centered
-    
-    # Fill screen with menu background color
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                new_state = handleMenuClicks(menu_button, back_button, next_button, mouse_x, mouse_y, curr_state, next_state=settings.GameState.INSTRUCTIONS_2)
+                if new_state != curr_state:
+                    return new_state  # Exit current instructions page and change state
 
-        settings.display_surface.fill(settings.MENU_BG_COLOR)
-        renderTitle(title_font, "GESTURIS", title_x, settings.GAME_PIXEL_SIZE * 0.6)
-
-        subtitle_text = subtitle_font.render("HOW TO PLAY", True, (255, 255, 255))
-        settings.display_surface.blit(subtitle_text, (TEXT_LEFT_ALIGNMENT, SUBTITLE_TEXT_Y))
+        renderCommonInstructionElements(menu_button, back_button, next_button)
 
         # Draw instructions text
         write_text(settings.display_surface, INSTRUCTIONS_TEXT, text_font, TEXT_LEFT_ALIGNMENT, SUBTITLE_TEXT_Y + (settings.GAME_PIXEL_SIZE * 2.75))
-
-        # Draw buttons with hover effect
-        mouse_x, mouse_y = pygame.mouse.get_pos()
-        
-        if menu_button.collidepoint(mouse_x, mouse_y):
-            pygame.draw.rect(settings.display_surface, settings.BUTTON_HOVER_COLOR, menu_button, 0, settings.BUTTON_CORNER_RADIUS)
-        else:
-            pygame.draw.rect(settings.display_surface, settings.BUTTON_COLOR, menu_button)
-        pygame.draw.rect(settings.display_surface, settings.BUTTON_OUTLINE_COLOR, menu_button, settings.BUTTON_OUTLINE_WIDTH, settings.BUTTON_CORNER_RADIUS)
-
-        if back_button.collidepoint(mouse_x, mouse_y):
-            pygame.draw.rect(settings.display_surface, settings.BUTTON_HOVER_COLOR, back_button, 0, settings.BUTTON_CORNER_RADIUS)
-        else:
-            pygame.draw.rect(settings.display_surface, settings.BUTTON_COLOR, back_button)
-        pygame.draw.rect(settings.display_surface, settings.BUTTON_OUTLINE_COLOR, back_button, settings.BUTTON_OUTLINE_WIDTH, settings.BUTTON_CORNER_RADIUS)
-
-        if next_button.collidepoint(mouse_x, mouse_y):
-            pygame.draw.rect(settings.display_surface, settings.BUTTON_HOVER_COLOR, next_button, 0, settings.BUTTON_CORNER_RADIUS)
-        else:
-            pygame.draw.rect(settings.display_surface, settings.BUTTON_COLOR, next_button)
-        pygame.draw.rect(settings.display_surface, settings.BUTTON_OUTLINE_COLOR, next_button, settings.BUTTON_OUTLINE_WIDTH, settings.BUTTON_CORNER_RADIUS)
-
-        # Draw button text
-        settings.display_surface.blit(menu_text, (menu_text_x, menu_text_y))
-        settings.display_surface.blit(back_text, (back_text_x, back_text_y))
-        settings.display_surface.blit(next_text, (next_text_x, next_text_y))
 
         pygame.display.update()
     
@@ -143,4 +184,45 @@ def displayInstructionsPage1(curr_state):
 
 
 def displayInstructionsPage2(curr_state):
-    print("IN INSTR PAGE 2")
+    running = True
+
+    INSTRUCTIONS_TEXT = [
+        "Hello"
+    ]
+    TEXT_LEFT_ALIGNMENT = settings.GAME_PIXEL_SIZE * 3.5
+    SUBTITLE_TEXT_Y = settings.GAME_PIXEL_SIZE * 5
+
+    text_font = pygame.font.SysFont("courier", 16)
+
+    # Button setup
+    MENU_BUTTON_X, MENU_BUTTON_Y = settings.GAME_PIXEL_SIZE * 2.5, settings.GAME_PIXEL_SIZE * 2
+    MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT = 150, 55
+
+    ARROW_BUTTON_WIDTH, ARROW_BUTTON_HEIGHT = 75, 43
+    ARROW_BUTTON_Y = settings.WINDOW_HEIGHT - settings.GAME_PIXEL_SIZE * 3.5
+    NEXT_BUTTON_X = settings.WINDOW_WIDTH - settings.GAME_PIXEL_SIZE * 6
+    BACK_BUTTON_X = NEXT_BUTTON_X - ARROW_BUTTON_WIDTH - settings.GAME_PIXEL_SIZE * 0.5
+
+    menu_button = pygame.Rect(MENU_BUTTON_X, MENU_BUTTON_Y, MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT)
+    back_button = pygame.Rect(BACK_BUTTON_X, ARROW_BUTTON_Y, ARROW_BUTTON_WIDTH, ARROW_BUTTON_HEIGHT)
+    next_button = pygame.Rect(NEXT_BUTTON_X, ARROW_BUTTON_Y, ARROW_BUTTON_WIDTH, ARROW_BUTTON_HEIGHT)
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                new_state = handleMenuClicks(menu_button, back_button, next_button, mouse_x, mouse_y, curr_state, back_state=settings.GameState.INSTRUCTIONS_1)
+                if new_state != curr_state:
+                    return new_state  # Exit current instructions page and change state
+
+        renderCommonInstructionElements(menu_button, back_button, next_button)
+
+        # Draw instructions text
+        write_text(settings.display_surface, INSTRUCTIONS_TEXT, text_font, TEXT_LEFT_ALIGNMENT, SUBTITLE_TEXT_Y + (settings.GAME_PIXEL_SIZE * 2.75))
+
+        pygame.display.update()
+    
+    pygame.quit()
+    sys.exit()
