@@ -96,8 +96,8 @@ def runGame(curr_state):
     mode = "SINGLE" # TODO: update when we deal with mode switching
 
     # Font & Text
-    font = pygame.font.SysFont("monaco", 18)  # Default font
-    bold_font = pygame.font.SysFont("monaco", 20, bold=True)  # Default font, size 48
+    in_game_font = pygame.font.Font(settings.FONT_PATH, 20)  # Default font
+    heading_font = pygame.font.Font(settings.FONT_PATH, 22)  # Default font, size 48
 
     if os.name == "posix":  # macOS or Linux
         emoji_font = pygame.font.SysFont("arial", 18)  # macOS
@@ -108,20 +108,20 @@ def runGame(curr_state):
     else:
         raise Exception("Unsupported platform for emoji rendering")
 
-    next_text = bold_font.render("NEXT", True, (255, 255, 255))
-    hold_text = bold_font.render("HOLD", True, (255, 255, 255))
+    next_text = heading_font.render("NEXT", True, (255, 255, 255))
+    hold_text = heading_font.render("HOLD", True, (255, 255, 255))
 
-    score_text = font.render(f"SCORE: {score}", True, (255, 255, 255))
-    lines_text = font.render(f"LINES: {lines}", True, (255, 255, 255))
-    mode_text = font.render(f"MODE: {mode}", True, (255, 255, 255))
+    score_text = in_game_font.render(f"SCORE: {score}", True, (255, 255, 255))
+    lines_text = in_game_font.render(f"LINES: {lines}", True, (255, 255, 255))
+    mode_text = in_game_font.render(f"MODE: {mode}", True, (255, 255, 255))
 
-    gestures_text = bold_font.render("GESTURES:", True, (255, 255, 255))
-    right_text = font.render("RIGHT: ", True, (255, 255, 255))
-    left_text = font.render("LEFT: ", True, (255, 255, 255))
-    rotate_right_text = font.render("ROTATE RIGHT: ", True, (255, 255, 255))
-    rotate_left_text = font.render("ROTATE LEFT: ", True, (255, 255, 255))
-    hold_swap_text = font.render("HOLD/SWAP: ", True, (255, 255, 255))
-    drop_text = font.render("DROP: ", True, (255, 255, 255))
+    gestures_text = heading_font.render("GESTURES:", True, (255, 255, 255))
+    right_text = in_game_font.render("RIGHT: ", True, (255, 255, 255))
+    left_text = in_game_font.render("LEFT: ", True, (255, 255, 255))
+    rotate_right_text = in_game_font.render("ROTATE RIGHT: ", True, (255, 255, 255))
+    rotate_left_text = in_game_font.render("ROTATE LEFT: ", True, (255, 255, 255))
+    hold_swap_text = in_game_font.render("HOLD/SWAP: ", True, (255, 255, 255))
+    drop_text = in_game_font.render("DROP: ", True, (255, 255, 255))
 
     # Load images
     victory_hand = pygame.image.load("images/victory_hand.png")
@@ -177,8 +177,8 @@ def runGame(curr_state):
         settings.display_surface.blit(next_text, (settings.NEXT_BOX_X + (settings.GAME_PIXEL_SIZE * 2), settings.NEXT_BOX_Y + (settings.GAME_PIXEL_SIZE * .5)))
         settings.display_surface.blit(hold_text, (settings.HOLD_BOX_X + (settings.GAME_PIXEL_SIZE * 1.9), settings.HOLD_BOX_Y + (settings.GAME_PIXEL_SIZE * .5)))
 
-        score_text = font.render(f"SCORE: {score}", True, (255, 255, 255))
-        lines_text = font.render(f"LINES: {lines}", True, (255, 255, 255))
+        score_text = in_game_font.render(f"SCORE: {score}", True, (255, 255, 255))
+        lines_text = in_game_font.render(f"LINES: {lines}", True, (255, 255, 255))
         settings.display_surface.blit(score_text, (settings.STATS_BOX_X + (settings.GAME_PIXEL_SIZE * .75), settings.STATS_BOX_Y + (settings.GAME_PIXEL_SIZE * .5)))
         settings.display_surface.blit(lines_text, (settings.STATS_BOX_X + (settings.GAME_PIXEL_SIZE * .75), settings.STATS_BOX_Y + (settings.GAME_PIXEL_SIZE * 2.5)))
         settings.display_surface.blit(mode_text, (settings.STATS_BOX_X + (settings.GAME_PIXEL_SIZE * .75), settings.STATS_BOX_Y + (settings.GAME_PIXEL_SIZE * 4.5)))
