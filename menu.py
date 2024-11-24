@@ -55,10 +55,6 @@ def displayMenu(curr_state):
     scaled_sound_icon = pygame.transform.scale(sound_icon, (ICON_DIM, ICON_DIM))
     sound_button = pygame.Rect(SOUND_X, ICON_Y, ICON_DIM, ICON_DIM)
 
-    # instructions button
-    # settings button
-    # volume button
-
     while menu_running:
         # Event loop
         mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -76,17 +72,6 @@ def displayMenu(curr_state):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-
-            # mouse_x, mouse_y = pygame.mouse.get_pos()
-
-            # # Check for hover on icons
-            # instr_scale = HOVER_SCALE if instr_button.collidepoint(mouse_x, mouse_y) else NORMAL_SCALE
-            # settings_scale = HOVER_SCALE if settings_button.collidepoint(mouse_x, mouse_y) else NORMAL_SCALE
-            # sound_scale = HOVER_SCALE if sound_button.collidepoint(mouse_x, mouse_y) else NORMAL_SCALE
-
-            # hover_scaled_instr_icon = pygame.transform.scale(scaled_instructions_icon, (int(ICON_DIM * instr_scale), int(ICON_DIM * instr_scale)))
-            # hover_scaled_settings_icon = pygame.transform.scale(scaled_settings_icon, (int(ICON_DIM * settings_scale), int(ICON_DIM * settings_scale)))
-            # hover_scaled_sound_icon = pygame.transform.scale(scaled_sound_icon, (int(ICON_DIM * sound_scale), int(ICON_DIM * sound_scale)))
 
             # Check for button clicks
             if event.type == pygame.MOUSEBUTTONDOWN:

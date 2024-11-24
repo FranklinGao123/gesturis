@@ -99,15 +99,6 @@ def runGame(curr_state):
     in_game_font = pygame.font.Font(settings.FONT_PATH, 20)  # Default font
     heading_font = pygame.font.Font(settings.FONT_PATH, 22)  # Default font, size 48
 
-    if os.name == "posix":  # macOS or Linux
-        emoji_font = pygame.font.SysFont("arial", 18)  # macOS
-        # For Linux, use a path to an emoji font like Noto Color Emoji
-        # font = pygame.font.Font("/usr/share/fonts/noto/NotoColorEmoji.ttf", 48)
-    elif os.name == "nt":  # Windows
-        emoji_font = pygame.font.SysFont("segoeuiemoji", 18)
-    else:
-        raise Exception("Unsupported platform for emoji rendering")
-
     next_text = heading_font.render("NEXT", True, (255, 255, 255))
     hold_text = heading_font.render("HOLD", True, (255, 255, 255))
 

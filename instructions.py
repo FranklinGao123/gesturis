@@ -5,7 +5,7 @@ from menu import renderTitle
 
 def write_text(surface, text, font, x, y):
     for line in text:
-        line_surface = font.render(line, True, (255, 255, 255))
+        line_surface = font.render(line, True, (ICON_SCALE5, ICON_SCALE5, ICON_SCALE5))
         surface.blit(line_surface, (x, y))
         y += line_surface.get_height() + 5
     
@@ -31,7 +31,7 @@ def handleMenuClicks(menu_button, back_button, next_button, mouse_x, mouse_y, cu
         return next_state
     return curr_state
 
-def renderCommonInstructionElements(menu_button, back_button, next_button):
+def renderCommonInstructionElements(menu_button, back_button, next_button, subtitle_text):
 
     MENU_BUTTON_WIDTH = 150
     MENU_BUTTON_HEIGHT = 55
@@ -82,7 +82,7 @@ def renderCommonInstructionElements(menu_button, back_button, next_button):
     renderTitle(title_font, "GESTURIS", title_x, settings.GAME_PIXEL_SIZE * 0.6)
 
     # Subtitle
-    subtitle_surface = subtitle_font.render("HOW TO PLAY", True, (255, 255, 255))
+    subtitle_surface = subtitle_font.render(subtitle_text, True, (255, 255, 255))
     settings.display_surface.blit(subtitle_surface, (settings.GAME_PIXEL_SIZE * 3.5, SUBTITLE_TEXT_Y))
 
     # Render buttons
@@ -172,7 +172,7 @@ def displayInstructionsPage1(curr_state):
                 if new_state != curr_state:
                     return new_state  # Exit current instructions page and change state
 
-        renderCommonInstructionElements(menu_button, back_button, next_button)
+        renderCommonInstructionElements(menu_button, back_button, next_button, "HOW TO PLAY")
 
         # Draw instructions text
         write_text(settings.display_surface, INSTRUCTIONS_TEXT, text_font, TEXT_LEFT_ALIGNMENT, SUBTITLE_TEXT_Y + (settings.GAME_PIXEL_SIZE * 2.75))
@@ -186,15 +186,7 @@ def displayInstructionsPage1(curr_state):
 def displayInstructionsPage2(curr_state):
     running = True
 
-    INSTRUCTIONS_TEXT = [
-        "Hello"
-    ]
-    TEXT_LEFT_ALIGNMENT = settings.GAME_PIXEL_SIZE * 3.5
-    SUBTITLE_TEXT_Y = settings.GAME_PIXEL_SIZE * 5
-
-    text_font = pygame.font.SysFont("courier", 16)
-
-    # Button setup
+     # Button setup
     MENU_BUTTON_X, MENU_BUTTON_Y = settings.GAME_PIXEL_SIZE * 2.5, settings.GAME_PIXEL_SIZE * 2
     MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT = 150, 55
 
@@ -207,6 +199,37 @@ def displayInstructionsPage2(curr_state):
     back_button = pygame.Rect(BACK_BUTTON_X, ARROW_BUTTON_Y, ARROW_BUTTON_WIDTH, ARROW_BUTTON_HEIGHT)
     next_button = pygame.Rect(NEXT_BUTTON_X, ARROW_BUTTON_Y, ARROW_BUTTON_WIDTH, ARROW_BUTTON_HEIGHT)
 
+    INSTRUCTIONS_TEXT = [
+        "Hello"
+    ]
+
+    # Load images
+    ICON_SCALE = 100
+    victory_hand = pygame.image.load("images/victory_hand.png")
+    scaled_victory_hand = pygame.transform.scale(victory_hand, (ICON_SCALE, ICON_SCALE))
+
+    point_hand = pygame.image.load("images/point_hand.png")
+    scaled_point_hand = pygame.transform.scale(point_hand, (ICON_SCALE, ICON_SCALE))
+
+    thumbs_up = pygame.image.load("images/thumbs_up.png")
+    scaled_thumbs_up = pygame.transform.scale(thumbs_up, (ICON_SCALE, ICON_SCALE))
+
+    thumbs_down = pygame.image.load("images/thumbs_down.png")
+    scaled_thumbs_down = pygame.transform.scale(thumbs_down, (ICON_SCALE, ICON_SCALE))
+
+    open_palm = pygame.image.load("images/open_palm.png")
+    scaled_open_palm = pygame.transform.scale(open_palm, (ICON_SCALE, ICON_SCALE))
+
+    i_love_you = pygame.image.load("images/i_love_you.png")
+    scaled_i_love_you = pygame.transform.scale(i_love_you, (ICON_SCALE, ICON_SCALE))
+
+    TEXT_LEFT_ALIGNMENT = settings.GAME_PIXEL_SIZE * 3.5
+    SUBTITLE_TEXT_Y = settings.GAME_PIXEL_SIZE * 5
+
+    # Text settings
+    gesture_type_font = pygame.font.Font(settings.FONT_PATH, 20)
+    text_font = pygame.font.SysFont("courier", 16)
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -217,7 +240,7 @@ def displayInstructionsPage2(curr_state):
                 if new_state != curr_state:
                     return new_state  # Exit current instructions page and change state
 
-        renderCommonInstructionElements(menu_button, back_button, next_button)
+        renderCommonInstructionElements(menu_button, back_button, next_button, "GESTURES:")
 
         # Draw instructions text
         write_text(settings.display_surface, INSTRUCTIONS_TEXT, text_font, TEXT_LEFT_ALIGNMENT, SUBTITLE_TEXT_Y + (settings.GAME_PIXEL_SIZE * 2.75))
