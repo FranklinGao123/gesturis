@@ -1,18 +1,7 @@
 import pygame
 import sys
 import settings 
-
-def renderTitle(title_font, text, x, y):
-    offset_x = x
-    colour_ind = 0
-    for c in text:
-        if colour_ind == len(settings.GESTURIS_COLOURS) - 1:
-            colour_ind = 0
-        letter = title_font.render(c, True, settings.GESTURIS_COLOURS[colour_ind])
-        settings.display_surface.blit(letter, (offset_x, y))
-        offset_x += letter.get_width()
-        colour_ind += 1
-
+from utils import renderTitle, drawButtonWithText
 
 # This method will return a menu action
 def displayMenu(curr_state):
