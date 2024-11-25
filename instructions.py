@@ -5,7 +5,7 @@ from menu import renderTitle
 
 def write_text(surface, text, font, x, y):
     for line in text:
-        line_surface = font.render(line, True, (ICON_SCALE5, ICON_SCALE5, ICON_SCALE5))
+        line_surface = font.render(line, True, (255, 255, 255))
         surface.blit(line_surface, (x, y))
         y += line_surface.get_height() + 5
     
