@@ -1,6 +1,13 @@
 import pygame
 from Key_Handler import Key_Handler
 from enum import Enum
+from Mino_L import Mino_L
+from Mino_J import Mino_J
+from Mino_O import Mino_O
+from Mino_I import Mino_I
+from Mino_S import Mino_S
+from Mino_Z import Mino_Z
+from Mino_T import Mino_T
 
 class GameState(Enum):
     MAIN_MENU = "main menu"
@@ -28,7 +35,7 @@ GESTURIS_COLOURS = [
 
 # Basic dimenion settings
 GAME_PIXEL_SIZE = 25
-GAME_WIDTH, GAME_HEIGHT = 10 * GAME_PIXEL_SIZE, 20 * GAME_PIXEL_SIZE
+GAME_WIDTH, GAME_HEIGHT = 9 * GAME_PIXEL_SIZE, 20 * GAME_PIXEL_SIZE
 GAME_X_OFFSET = WINDOW_WIDTH/2 - GAME_WIDTH/2
 GAME_Y_OFFSET = WINDOW_HEIGHT/2 - GAME_HEIGHT/2
 
@@ -37,7 +44,7 @@ BOX_LINE_WIDTH = 10
 BOX_LINE_COLOUR = 'white'
 BOX_FILL_COLOUR = 'black'
 
-START_LOCATION_X, START_LOCATION_Y = GAME_WIDTH/2 - GAME_PIXEL_SIZE, GAME_PIXEL_SIZE
+START_LOCATION_X, START_LOCATION_Y = GAME_WIDTH/2 - GAME_PIXEL_SIZE * 0.5, GAME_PIXEL_SIZE
 
 NEXT_BOX_X, NEXT_BOX_Y = GAME_X_OFFSET - 225, GAME_Y_OFFSET
 HOLD_BOX_X, HOLD_BOX_Y = GAME_X_OFFSET + (1.5*225), GAME_Y_OFFSET
@@ -65,7 +72,7 @@ NEXT_PIECE_X, NEXT_PIECE_Y = GAME_X_OFFSET - (GAME_PIXEL_SIZE * 6.5), GAME_Y_OFF
 HOLD_PIECE_X, HOLD_PIECE_Y = GAME_X_OFFSET + GAME_PIXEL_SIZE * 10 + 50, GAME_Y_OFFSET
 
 
-DROP_INTERVAL = 600
+DROP_INTERVAL = 60
 
 INPUT_INTERVAL = 100
 
@@ -75,3 +82,6 @@ staticBlocks = list()
 
 hold = None
 held = False
+
+bag = [Mino_O, Mino_I, Mino_S, Mino_Z, Mino_L, Mino_J, Mino_T]
+cur_bag = []

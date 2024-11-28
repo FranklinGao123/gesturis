@@ -24,18 +24,11 @@ def pickPiece():
     5 - J piece
     6 - T piece
     '''
-    i = random.randint(0,6)
-
-    piece = {
-        0: Mino_O,
-        1: Mino_I,
-        2: Mino_S,
-        3: Mino_Z,
-        4: Mino_L,
-        5: Mino_J,
-        6: Mino_T
-    }
-    return piece[i]()
+    if len(settings.cur_bag) == 0:
+        for i in settings.bag:
+            settings.cur_bag.append(i)
+        random.shuffle(settings.cur_bag)
+    return settings.cur_bag.pop()()
 
 # Return the number updated number of lines and updated score
 def checkLineClear(lines, score):
@@ -134,13 +127,11 @@ def runGame(curr_state):
     scaled_i_love_you = pygame.transform.scale(i_love_you, (25, 25))
 
     # Board + Boxes (tetris grid 20x10)
-    game_board = Box(settings.GAME_WIDTH + 25, settings.GAME_HEIGHT + 25, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
+    game_board = Box(settings.GAME_WIDTH, settings.GAME_HEIGHT, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
     next_box = Box(settings.GAME_PIXEL_SIZE * 6, settings.GAME_PIXEL_SIZE * 7, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
     hold_box = Box(settings.GAME_PIXEL_SIZE * 6, settings.GAME_PIXEL_SIZE * 6, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
     stats_box = Box(settings.GAME_PIXEL_SIZE * 9, settings.GAME_PIXEL_SIZE * 6, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
     gestures_box = Box(settings.GAME_PIXEL_SIZE * 9, settings.GAME_PIXEL_SIZE * 12, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
-
-    staticBlocks = list()
 
     # Tetris pieces
     current_piece = Mino_J()
@@ -158,7 +149,7 @@ def runGame(curr_state):
         settings.display_surface.fill('black')
 
         # Display board + boxes
-        game_board.blit(settings.WINDOW_WIDTH/2 - settings.GAME_WIDTH/2 - settings.BOX_LINE_WIDTH, settings.WINDOW_HEIGHT/2 - settings.GAME_HEIGHT/2 - settings.BOX_LINE_WIDTH)
+        game_board.blit(settings.WINDOW_WIDTH/2 - settings.GAME_WIDTH/2, settings.WINDOW_HEIGHT/2 - settings.GAME_HEIGHT/2)
         next_box.blit(settings.NEXT_BOX_X, settings.NEXT_BOX_Y)
         hold_box.blit(settings.HOLD_BOX_X, settings.HOLD_BOX_Y)
         stats_box.blit(settings.STATS_BOX_X, settings.STATS_BOX_Y)
@@ -219,12 +210,12 @@ def runGame(curr_state):
             settings.held = False
             for i in current_piece.b:
                 settings.staticBlocks.append(i)
+            lines, score = checkLineClear(lines, score)
             current_piece = next_piece
             current_piece.setXY(settings.START_LOCATION_X, settings.START_LOCATION_Y)
             current_piece.setActivePiece()
             next_piece = pickPiece()
             next_piece.setXY(0,0)
-            lines, score = checkLineClear(lines, score)
         settings.KEYHANDLER.update()
 
     pygame.quit()
