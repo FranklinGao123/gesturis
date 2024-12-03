@@ -12,11 +12,11 @@ def write_text(surface, text, font, x, y):
 def draw_button(font, rect, text, is_hovered=False):
     """Draws a button with hover effects."""
     if is_hovered:
-        pygame.draw.rect(settings.display_surface, settings.BUTTON_HOVER_COLOR, rect, border_radius=settings.BUTTON_CORNER_RADIUS)
+        pygame.draw.rect(settings.display_surface, settings.BUTTON_HOVER_COLOUR, rect, border_radius=settings.BUTTON_CORNER_RADIUS)
     else:
-        pygame.draw.rect(settings.display_surface, settings.BUTTON_COLOR, rect, border_radius=settings.BUTTON_CORNER_RADIUS)
-    pygame.draw.rect(settings.display_surface, settings.BUTTON_OUTLINE_COLOR, rect, 2, border_radius=settings.BUTTON_CORNER_RADIUS)
-    button_text = font.render(text, True, settings.BUTTON_TEXT_COLOR )
+        pygame.draw.rect(settings.display_surface, settings.BUTTON_COLOUR, rect, border_radius=settings.BUTTON_CORNER_RADIUS)
+    pygame.draw.rect(settings.display_surface, settings.BUTTON_OUTLINE_COLOUR, rect, 2, border_radius=settings.BUTTON_CORNER_RADIUS)
+    button_text = font.render(text, True, settings.BUTTON_TEXT_COLOUR )
     text_rect = button_text.get_rect(center=rect.center)
     settings.display_surface.blit(button_text, text_rect)
 
@@ -53,9 +53,9 @@ def renderCommonInstructionElements(menu_button, back_button, next_button, subti
     button_font = pygame.font.Font(settings.FONT_PATH, 23)
 
     # Text
-    menu_text = button_font.render("<- MENU", True, settings.BUTTON_TEXT_COLOR)
-    back_text = button_font.render("<-", True, settings.BUTTON_TEXT_COLOR)
-    next_text = button_font.render("->", True, settings.BUTTON_TEXT_COLOR)
+    menu_text = button_font.render("<- MENU", True, settings.BUTTON_TEXT_COLOUR)
+    back_text = button_font.render("<-", True, settings.BUTTON_TEXT_COLOUR)
+    next_text = button_font.render("->", True, settings.BUTTON_TEXT_COLOUR)
 
     # Get text positions within buttons
     menu_text_width, menu_text_height = menu_text.get_size()
@@ -74,7 +74,7 @@ def renderCommonInstructionElements(menu_button, back_button, next_button, subti
     total_width = sum(title_font.render(c, True, settings.GESTURIS_COLOURS[0]).get_width() for c in "GESTURIS")
     title_x = (settings.WINDOW_WIDTH - total_width) // 2 # Set initial x position so that text is centered
 
-    settings.display_surface.fill(settings.MENU_BG_COLOR)
+    settings.display_surface.fill(settings.MENU_BG_COLOUR)
 
     # Title
     total_width = sum(title_font.render(c, True, settings.GESTURIS_COLOURS[0]).get_width() for c in "GESTURIS")
@@ -90,16 +90,16 @@ def renderCommonInstructionElements(menu_button, back_button, next_button, subti
 
     def renderButton(button, text_surface, x, y):
         if button.collidepoint(mouse_x, mouse_y):
-            pygame.draw.rect(settings.display_surface, settings.BUTTON_HOVER_COLOR, button, 0, settings.BUTTON_CORNER_RADIUS)
+            pygame.draw.rect(settings.display_surface, settings.BUTTON_HOVER_COLOUR, button, 0, settings.BUTTON_CORNER_RADIUS)
         else:
-            pygame.draw.rect(settings.display_surface, settings.BUTTON_COLOR, button)
-        pygame.draw.rect(settings.display_surface, settings.BUTTON_OUTLINE_COLOR, button, settings.BUTTON_OUTLINE_WIDTH, settings.BUTTON_CORNER_RADIUS)
+            pygame.draw.rect(settings.display_surface, settings.BUTTON_COLOUR, button)
+        pygame.draw.rect(settings.display_surface, settings.BUTTON_OUTLINE_COLOUR, button, settings.BUTTON_OUTLINE_WIDTH, settings.BUTTON_CORNER_RADIUS)
         settings.display_surface.blit(text_surface, (x, y))
 
     # Create text surfaces
-    menu_text = button_font.render("<- MENU", True, settings.BUTTON_TEXT_COLOR)
-    back_text = button_font.render("<-", True, settings.BUTTON_TEXT_COLOR)
-    next_text = button_font.render("->", True, settings.BUTTON_TEXT_COLOR)
+    menu_text = button_font.render("<- MENU", True, settings.BUTTON_TEXT_COLOUR)
+    back_text = button_font.render("<-", True, settings.BUTTON_TEXT_COLOUR)
+    next_text = button_font.render("->", True, settings.BUTTON_TEXT_COLOUR)
 
     # Draw buttons
     menu_text_x = menu_button.centerx - menu_text.get_width() // 2
@@ -226,12 +226,12 @@ def displayInstructionsPage2(curr_state):
     # Load and scale images
     ICON_SCALE = 80
     gestures = {
-        "Move Right": {"image": pygame.image.load("images/thumbs_up.png"), "desc": "Make a thumbs UP motion with one hand."},
-        "Move Left": {"image": pygame.image.load("images/thumbs_down.png"), "desc": "Make a thumbs DOWN motion with one hand."},
-        "Rotate Right": {"image": pygame.image.load("images/point_hand.png"), "desc": "Point up with your index finger in one hand."},
-        "Rotate Left": {"image": pygame.image.load("images/victory_hand.png"), "desc": "Make a 'peace' sign with one hand."},
-        "Swap/Hold": {"image": pygame.image.load("images/i_love_you.png"), "desc": "Make an 'I love you' hand sign."},
-        "Drop Block": {"image": pygame.image.load("images/open_palm.png"), "desc": "Make a fist with one hand."},
+        "MOVE RIGHT": {"image": pygame.image.load("images/thumbs_up.png"), "desc": "Make a thumbs UP motion with one hand."},
+        "ROTATE RIGHT": {"image": pygame.image.load("images/point_hand.png"), "desc": "Point up with your index finger in one hand."},
+        "SWAP/HOLD": {"image": pygame.image.load("images/i_love_you.png"), "desc": "Make an 'I love you' hand sign."},
+        "MOVE LEFT": {"image": pygame.image.load("images/thumbs_down.png"), "desc": "Make a thumbs DOWN motion with one hand."},
+        "ROTATE LEFT": {"image": pygame.image.load("images/victory_hand.png"), "desc": "Make a 'peace' sign with one hand."},
+        "DROP BLOCK": {"image": pygame.image.load("images/open_palm.png"), "desc": "Make a fist with one hand."},
     }
 
     for key in gestures:
