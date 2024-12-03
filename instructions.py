@@ -183,6 +183,28 @@ def displayInstructionsPage1(curr_state):
     sys.exit()
 
 
+def wrap_text(text, font, max_width):
+    """Wrap text to fit within a specified width."""
+    words = text.split()
+    lines = []
+    current_line = []
+
+    for word in words:
+        # Check if adding the next word exceeds the width
+        test_line = ' '.join(current_line + [word])
+        if font.size(test_line)[0] <= max_width:
+            current_line.append(word)
+        else:
+            lines.append(' '.join(current_line))
+            current_line = [word]
+
+    if current_line:  # Add the last line
+        lines.append(' '.join(current_line))
+
+    return lines
+
+
+
 def displayInstructionsPage2(curr_state):
     running = True
 
@@ -199,36 +221,34 @@ def displayInstructionsPage2(curr_state):
     back_button = pygame.Rect(BACK_BUTTON_X, ARROW_BUTTON_Y, ARROW_BUTTON_WIDTH, ARROW_BUTTON_HEIGHT)
     next_button = pygame.Rect(NEXT_BUTTON_X, ARROW_BUTTON_Y, ARROW_BUTTON_WIDTH, ARROW_BUTTON_HEIGHT)
 
-    INSTRUCTIONS_TEXT = [
-        "Hello"
-    ]
-
-    # Load images
     ICON_SCALE = 100
-    victory_hand = pygame.image.load("images/victory_hand.png")
-    scaled_victory_hand = pygame.transform.scale(victory_hand, (ICON_SCALE, ICON_SCALE))
+    
+    # Load and scale images
+    ICON_SCALE = 80
+    gestures = {
+        "Move Right": {"image": pygame.image.load("images/thumbs_up.png"), "desc": "Make a thumbs UP motion with one hand."},
+        "Move Left": {"image": pygame.image.load("images/thumbs_down.png"), "desc": "Make a thumbs DOWN motion with one hand."},
+        "Rotate Right": {"image": pygame.image.load("images/point_hand.png"), "desc": "Point up with your index finger in one hand."},
+        "Rotate Left": {"image": pygame.image.load("images/victory_hand.png"), "desc": "Make a 'peace' sign with one hand."},
+        "Swap/Hold": {"image": pygame.image.load("images/i_love_you.png"), "desc": "Make an 'I love you' hand sign."},
+        "Drop Block": {"image": pygame.image.load("images/open_palm.png"), "desc": "Make a fist with one hand."},
+    }
 
-    point_hand = pygame.image.load("images/point_hand.png")
-    scaled_point_hand = pygame.transform.scale(point_hand, (ICON_SCALE, ICON_SCALE))
-
-    thumbs_up = pygame.image.load("images/thumbs_up.png")
-    scaled_thumbs_up = pygame.transform.scale(thumbs_up, (ICON_SCALE, ICON_SCALE))
-
-    thumbs_down = pygame.image.load("images/thumbs_down.png")
-    scaled_thumbs_down = pygame.transform.scale(thumbs_down, (ICON_SCALE, ICON_SCALE))
-
-    open_palm = pygame.image.load("images/open_palm.png")
-    scaled_open_palm = pygame.transform.scale(open_palm, (ICON_SCALE, ICON_SCALE))
-
-    i_love_you = pygame.image.load("images/i_love_you.png")
-    scaled_i_love_you = pygame.transform.scale(i_love_you, (ICON_SCALE, ICON_SCALE))
-
-    TEXT_LEFT_ALIGNMENT = settings.GAME_PIXEL_SIZE * 3.5
-    SUBTITLE_TEXT_Y = settings.GAME_PIXEL_SIZE * 5
+    for key in gestures:
+        gestures[key]["image"] = pygame.transform.scale(gestures[key]["image"], (ICON_SCALE, ICON_SCALE))
 
     # Text settings
     gesture_type_font = pygame.font.Font(settings.FONT_PATH, 20)
     text_font = pygame.font.SysFont("courier", 16)
+
+    # Positioning variables
+    GESTURE_X_START = settings.GAME_PIXEL_SIZE * 5
+    GESTURE_Y_START = settings.GAME_PIXEL_SIZE * 8
+    GESTURE_SPACING_X = settings.GAME_PIXEL_SIZE * 15
+    GESTURE_SPACING_Y = settings.GAME_PIXEL_SIZE * 9.25
+
+    TEXT_WRAP_WIDTH = GESTURE_SPACING_X - 100  # Adjust width based on spacing
+    DESCRIPTION_LINE_HEIGHT = 20  # Spacing between lines in wrapped text
 
     while running:
         for event in pygame.event.get():
@@ -242,8 +262,33 @@ def displayInstructionsPage2(curr_state):
 
         renderCommonInstructionElements(menu_button, back_button, next_button, "GESTURES:")
 
-        # Draw instructions text
-        write_text(settings.display_surface, INSTRUCTIONS_TEXT, text_font, TEXT_LEFT_ALIGNMENT, SUBTITLE_TEXT_Y + (settings.GAME_PIXEL_SIZE * 2.75))
+        # Draw gesture images and labels
+        row, col = 0, 0
+        for gesture, details in gestures.items():
+            # Calculate positions
+            x = GESTURE_X_START + (col * GESTURE_SPACING_X)
+            y = GESTURE_Y_START + (row * GESTURE_SPACING_Y)
+            text_start_y_offset = y + settings.GAME_PIXEL_SIZE * 1.2
+
+            # Draw image
+            settings.display_surface.blit(details["image"], (x + (settings.GAME_PIXEL_SIZE * 3.5), y))
+
+            # Draw gesture label
+            label_surface = gesture_type_font.render(gesture, True, (255, 255, 255))
+            settings.display_surface.blit(label_surface, (x + (settings.GAME_PIXEL_SIZE * 2.7), y + ICON_SCALE + 5))
+
+            # Wrap and draw description
+            wrapped_lines = wrap_text(details["desc"], text_font, TEXT_WRAP_WIDTH)
+            for i, line in enumerate(wrapped_lines):
+                text_ypos = text_start_y_offset + ICON_SCALE + 30 + i * DESCRIPTION_LINE_HEIGHT
+                desc_surface = text_font.render(line, True, (200, 200, 200))
+                settings.display_surface.blit(desc_surface, (x, text_ypos)) # if i != 0 else text_ypos + 20))
+
+            # Update row and column
+            col += 1
+            if col > 2:  # 3 columns per row
+                col = 0
+                row += 1
 
         pygame.display.update()
     
