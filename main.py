@@ -136,9 +136,9 @@ def runGame(curr_state):
     # Board + Boxes (tetris grid 20x10)
     game_board = Box(settings.GAME_WIDTH + 25, settings.GAME_HEIGHT + 25, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
     next_box = Box(settings.GAME_PIXEL_SIZE * 6, settings.GAME_PIXEL_SIZE * 7, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
-    hold_box = Box(settings.GAME_PIXEL_SIZE * 6, settings.GAME_PIXEL_SIZE * 6, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
+    hold_box = Box(settings.GAME_PIXEL_SIZE * 6, settings.GAME_PIXEL_SIZE * 7, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
     stats_box = Box(settings.GAME_PIXEL_SIZE * 9, settings.GAME_PIXEL_SIZE * 6, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
-    gestures_box = Box(settings.GAME_PIXEL_SIZE * 9, settings.GAME_PIXEL_SIZE * 12, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
+    gestures_box = Box(settings.GAME_PIXEL_SIZE * 9, settings.GAME_PIXEL_SIZE * 11, settings.BOX_FILL_COLOUR, settings.BOX_LINE_WIDTH, settings.BOX_LINE_COLOUR)
 
     staticBlocks = list()
 
@@ -147,13 +147,21 @@ def runGame(curr_state):
     current_piece.setXY(settings.START_LOCATION_X, settings.START_LOCATION_Y)
     current_piece.setActivePiece()
     next_piece = pickPiece()
-    next_piece.setXY(0,0)
 
     # MAIN GAME LOOP
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:  # Trigger pause screen on ESC
+                    pause_action = displayPauseScreen()
+                    if pause_action == "RESUME":
+                        continue
+                    elif pause_action == "RESTART":
+                        return curr_state  # Restart the game
+                    elif pause_action == "QUIT":
+                        return settings.GameState.QUIT
                 
         settings.display_surface.fill('black')
 
@@ -249,6 +257,101 @@ def main():
         
     # Close the window
     pygame.quit()
+
+
+
+def displayPauseScreen():
+    """
+    Display the pause screen and handle resume, restart, and quit options.
+    """
+    # Semi-transparent background
+    overlay = pygame.Surface((settings.WINDOW_WIDTH, settings.WINDOW_HEIGHT))
+    overlay.set_alpha(128)
+    overlay.fill((0, 0, 0))
+    settings.display_surface.blit(overlay, (0, 0))
+
+    pause_running = True
+
+    BUTTON_WIDTH = 236
+    BUTTON_HEIGHT = 66
+
+    BUTTON_X = (settings.WINDOW_WIDTH - BUTTON_WIDTH) // 2
+    RESUME_BUTTON_Y = 290
+    SPACE_BW_BUTTONS = (114 * .65)
+    RESTART_BUTTON_Y = RESUME_BUTTON_Y + SPACE_BW_BUTTONS
+    QUIT_Y = RESTART_BUTTON_Y + SPACE_BW_BUTTONS
+
+    # Modal box
+    modal_width, modal_height = 430, 320
+    modal_x = (settings.WINDOW_WIDTH - modal_width) // 2
+    modal_y = (settings.WINDOW_HEIGHT - modal_height) // 2
+    modal_rect = pygame.Rect(modal_x, modal_y, modal_width, modal_height)
+    pygame.draw.rect(settings.display_surface, (255, 255, 255), modal_rect, 0, border_radius=10)
+
+    # Fonts + Text
+    title_font = pygame.font.Font(settings.FONT_PATH, 50)
+    button_font = pygame.font.Font(settings.FONT_PATH, 21)
+    title_text = title_font.render("PAUSED", True, (0, 0, 0))
+    settings.display_surface.blit(title_text, (modal_rect.centerx - title_text.get_width() // 2, modal_rect.y + 20))
+
+    resume_text = button_font.render("RESUME", True, (0, 0, 0))
+    restart_text = button_font.render("RESTART", True, (0, 0, 0))
+    quit_text = button_font.render("QUIT", True, (0, 0, 0))
+
+    # Buttons
+    resume_button = pygame.Rect(BUTTON_X, RESUME_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT)
+    restart_button = pygame.Rect(BUTTON_X, RESTART_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT)
+    quit_button = pygame.Rect(BUTTON_X, QUIT_Y, BUTTON_WIDTH, BUTTON_HEIGHT)
+
+    # Background box
+    # pause_box = pygame.Surface((400, 300))
+    # pause_box.fill((255, 255, 255))
+
+    while pause_running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:  # Resume on ESC
+                    return "RESUME"
+                elif event.key == pygame.K_r:  # Restart on R
+                    return "RESTART"
+                elif event.key == pygame.K_q:  # Quit on Q
+                    return "QUIT"
+
+        # Render the pause screen
+        # settings.display_surface.blit(modal_rect, (settings.WINDOW_WIDTH // 2 - 200, settings.WINDOW_HEIGHT // 2 - 150))
+
+        # Buttons
+        # Draw buttons with hover effect
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        
+        if pause_running and resume_button.collidepoint(mouse_x, mouse_y):
+            pygame.draw.rect(settings.display_surface, settings.BUTTON_HOVER_COLOUR_LIGHT, resume_button, 0, settings.BUTTON_CORNER_RADIUS)
+        else:
+            pygame.draw.rect(settings.display_surface, settings.BUTTON_COLOUR_INVERTED, resume_button)
+        pygame.draw.rect(settings.display_surface, (0, 0, 0), resume_button, settings.BUTTON_OUTLINE_WIDTH, settings.BUTTON_CORNER_RADIUS)
+
+        if pause_running and restart_button.collidepoint(mouse_x, mouse_y):
+            pygame.draw.rect(settings.display_surface, settings.BUTTON_HOVER_COLOUR_LIGHT, restart_button, 0, settings.BUTTON_CORNER_RADIUS)
+        else:
+            pygame.draw.rect(settings.display_surface, settings.BUTTON_COLOUR_INVERTED, restart_button)
+        pygame.draw.rect(settings.display_surface, (0, 0, 0), restart_button, settings.BUTTON_OUTLINE_WIDTH, settings.BUTTON_CORNER_RADIUS)
+
+        if pause_running and quit_button.collidepoint(mouse_x, mouse_y):
+            pygame.draw.rect(settings.display_surface, settings.BUTTON_HOVER_COLOUR_LIGHT, quit_button, 0, settings.BUTTON_CORNER_RADIUS)
+        else:
+            pygame.draw.rect(settings.display_surface, (175, 175, 175), quit_button, 0, settings.BUTTON_CORNER_RADIUS)
+        pygame.draw.rect(settings.display_surface, (0, 0, 0), quit_button, settings.BUTTON_OUTLINE_WIDTH, settings.BUTTON_CORNER_RADIUS)
+
+        # Draw text elements
+        settings.display_surface.blit(title_text, (settings.WINDOW_WIDTH // 2 - title_text.get_width() // 2, settings.WINDOW_HEIGHT // 2 - 140))
+        settings.display_surface.blit(resume_text, (settings.WINDOW_WIDTH // 2 - resume_text.get_width() // 2, settings.WINDOW_HEIGHT // 2 - 50))
+        settings.display_surface.blit(restart_text, (settings.WINDOW_WIDTH // 2 - restart_text.get_width() // 2, settings.WINDOW_HEIGHT // 2 + 23))
+        settings.display_surface.blit(quit_text, (settings.WINDOW_WIDTH // 2 - quit_text.get_width() // 2, settings.WINDOW_HEIGHT // 2 + 95))
+
+        pygame.display.update()
 
 main()
 

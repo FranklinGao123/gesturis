@@ -482,10 +482,10 @@ def displaySettings(
     toggle_button_x = modal_x + 300
     toggle_button_y = modal_y + 200
     toggle_button_rect = pygame.Rect(toggle_button_x, toggle_button_y, toggle_button_width, toggle_button_height)
-    toggle_handle_x = toggle_button_x + (toggle_button_width - toggle_button_height if colour_blind_mode else 0)
+    toggle_handle_x = toggle_button_x + (toggle_button_width - toggle_button_height) # + (toggle_button_width - toggle_button_height if colour_blind_mode else 0)
 
     pygame.draw.rect(settings.display_surface, (128, 128, 128), toggle_button_rect, border_radius=toggle_button_height // 2 - 2)
-    pygame.draw.rect(settings.display_surface, (0, 128, 0) if colour_blind_mode else (255, 0, 0), toggle_button_rect.inflate(-2, -2), border_radius=toggle_button_height // 2 - 2)
+    pygame.draw.rect(settings.display_surface, (0, 128, 0) if colour_blind_mode else (1, 158, 115), toggle_button_rect.inflate(-2, -2), border_radius=toggle_button_height // 2 - 2)
     pygame.draw.circle(settings.display_surface, (255, 255, 255), (toggle_handle_x + toggle_button_height // 2, toggle_button_y + toggle_button_height // 2), toggle_button_height // 2 - 2)
 
     # Cancel and Save Buttons
