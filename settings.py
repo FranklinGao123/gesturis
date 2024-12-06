@@ -1,5 +1,6 @@
 import pygame
 from Key_Handler import Key_Handler
+from Recognizer_Task import Recognizer_Task
 from enum import Enum
 from Mino_L import Mino_L
 from Mino_J import Mino_J
@@ -23,7 +24,7 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
 display_surface = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 pygame.display.set_caption('Gesturis')
 
-FONT_PATH = "fonts/kenney-mini.ttf"
+FONT_PATH = "gesturis-master/fonts/kenney-mini.ttf"
 GESTURIS_COLOURS = [
     "#E15A06",
     "#FAA144",
@@ -78,10 +79,12 @@ INPUT_INTERVAL = 100
 
 KEYHANDLER = Key_Handler()
 
+RECOGNIZER = Recognizer_Task()
+
 staticBlocks = list()
 
 hold = None
 held = False
 
-bag = [Mino_O, Mino_I, Mino_S, Mino_Z, Mino_L, Mino_J, Mino_T]
+# bag = [Mino_O, Mino_I, Mino_S, Mino_Z, Mino_L, Mino_J, Mino_T]
 cur_bag = []
