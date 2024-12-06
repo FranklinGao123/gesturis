@@ -96,7 +96,7 @@ class Mino:
 
     def update(self):
         self.auto_drop_counter += 1
-        if settings.KEYHANDLER.check_up():
+        if settings.KEYHANDLER.check_input(['Thumb_Up']):
             options = {
                 1: self.getDirection2,
                 2: self.getDirection3,
@@ -107,19 +107,19 @@ class Mino:
 
         self.checkMovementCollision()
 
-        if not self.left and settings.KEYHANDLER.check_key(pygame.K_LEFT):
+        if not self.left and settings.KEYHANDLER.check_input(['Pointing_Up']):
             self.b[0].x -= settings.GAME_PIXEL_SIZE
             self.b[1].x -= settings.GAME_PIXEL_SIZE
             self.b[2].x -= settings.GAME_PIXEL_SIZE
             self.b[3].x -= settings.GAME_PIXEL_SIZE
 
-        if not self.right and settings.KEYHANDLER.check_key(pygame.K_RIGHT):
+        if not self.right and settings.KEYHANDLER.check_input(['Victory']):
             self.b[0].x += settings.GAME_PIXEL_SIZE
             self.b[1].x += settings.GAME_PIXEL_SIZE
             self.b[2].x += settings.GAME_PIXEL_SIZE
             self.b[3].x += settings.GAME_PIXEL_SIZE 
 
-        if not self.bottom and (self.auto_drop_counter >= settings.DROP_INTERVAL or settings.KEYHANDLER.check_key(pygame.K_DOWN)):
+        if not self.bottom and (self.auto_drop_counter >= settings.DROP_INTERVAL or settings.KEYHANDLER.check_input(['Closed_Fist'])):
             self.b[0].y += settings.GAME_PIXEL_SIZE
             self.b[1].y += settings.GAME_PIXEL_SIZE
             self.b[2].y += settings.GAME_PIXEL_SIZE
@@ -129,7 +129,7 @@ class Mino:
             if self.auto_drop_counter >= settings.DROP_INTERVAL:
                 self.active = False
 
-        if settings.KEYHANDLER.check_space():
+        if settings.KEYHANDLER.check_input(['Closed_Fist']):
             while not self.bottom:
                 self.b[0].y += settings.GAME_PIXEL_SIZE
                 self.b[1].y += settings.GAME_PIXEL_SIZE
@@ -138,7 +138,7 @@ class Mino:
                 self.checkMovementCollision()
             self.active = False
         
-        if settings.KEYHANDLER.check_hold():
+        if settings.KEYHANDLER.check_input(['ILoveYou']):
             if not settings.held:
                 self.hold = True
                 settings.held = True
