@@ -110,22 +110,22 @@ def runGame(curr_state):
     drop_text = in_game_font.render("DROP: ", True, (255, 255, 255))
 
     # Load images
-    victory_hand = pygame.image.load("gesturis-master/images/victory_hand.png")
+    victory_hand = pygame.image.load("./images/victory_hand.png")
     scaled_victory_hand = pygame.transform.scale(victory_hand, (25, 25))
 
-    point_hand = pygame.image.load("gesturis-master/images/point_hand.png")
+    point_hand = pygame.image.load("./images/point_hand.png")
     scaled_point_hand = pygame.transform.scale(point_hand, (25, 25))
 
-    thumbs_up = pygame.image.load("gesturis-master/images/thumbs_up.png")
+    thumbs_up = pygame.image.load("./images/thumbs_up.png")
     scaled_thumbs_up = pygame.transform.scale(thumbs_up, (25, 25))
 
-    thumbs_down = pygame.image.load("gesturis-master/images/thumbs_down.png")
+    thumbs_down = pygame.image.load("./images/thumbs_down.png")
     scaled_thumbs_down = pygame.transform.scale(thumbs_down, (25, 25))
 
-    open_palm = pygame.image.load("gesturis-master/images/open_palm.png")
+    open_palm = pygame.image.load("./images/open_palm.png")
     scaled_open_palm = pygame.transform.scale(open_palm, (25, 25))
 
-    i_love_you = pygame.image.load("gesturis-master/images/i_love_you.png")
+    i_love_you = pygame.image.load("./images/i_love_you.png")
     scaled_i_love_you = pygame.transform.scale(i_love_you, (25, 25))
 
     # Board + Boxes (tetris grid 20x10)
@@ -144,6 +144,7 @@ def runGame(curr_state):
 
     # MAIN GAME LOOP
     while running:
+        print("hi")
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
