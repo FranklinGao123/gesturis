@@ -97,6 +97,7 @@ def displayMenu(curr_state):
                     elif save_button.collidepoint(mouse_x, mouse_y):
                         saveSettings(new_settings_state)  # Save the shared state
                         is_settings_active = False  # Close modal
+                        displayBaseMenu(is_settings_active, scaled_peace_icon, single_player_button, multi_player_button, hover_scaled_instr_icon, hover_scaled_settings_icon, hover_scaled_sound_icon)
             else:
                 # Handle main menu interactions
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -314,8 +315,7 @@ def displaySettings(
 
     # Handle toggle button (updates state directly)
     if mouse_down and toggle_button_rect.collidepoint(mouse_pos):
-        colour_blind_mode = not colour_blind_mode
-        new_settings_state["colour_blind_mode"] = colour_blind_mode
+        new_settings_state["colour_blind_mode"] = not colour_blind_mode
 
     # Re-render the visuals with updated values
     # SOUND FX Slider
@@ -341,9 +341,9 @@ def displaySettings(
 
 
 def saveSettings(new_settings_state):
-    settings.SOUND_FX_VOLUME = new_settings_state["sound_fx_volume"]
-    settings.MUSIC_VOLUME = new_settings_state["music_volume"]
-    settings.COLOUR_BLIND_MODE = new_settings_state["colour_blind_mode"]
+    settings.SETTINGS_STATE["sound_fx_volume"] = new_settings_state["sound_fx_volume"]
+    settings.SETTINGS_STATE["music_volume"] = new_settings_state["music_volume"]
+    settings.SETTINGS_STATE["colour_blind_mode"] = new_settings_state["colour_blind_mode"]
 
 
 # SLIDER HELPERS:

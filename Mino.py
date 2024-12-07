@@ -129,7 +129,7 @@ class Mino:
             if self.auto_drop_counter >= settings.DROP_INTERVAL:
                 self.active = False
 
-        if settings.KEYHANDLER.check_space():
+        if settings.KEYHANDLER.check_space(): # DROP
             while not self.bottom:
                 self.b[0].y += settings.GAME_PIXEL_SIZE
                 self.b[1].y += settings.GAME_PIXEL_SIZE
@@ -137,6 +137,7 @@ class Mino:
                 self.b[3].y += settings.GAME_PIXEL_SIZE
                 self.checkMovementCollision()
             self.active = False
+            settings.PLAYER_1_TURN = not settings.PLAYER_1_TURN
         
         if settings.KEYHANDLER.check_hold():
             if not settings.held:

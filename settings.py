@@ -18,6 +18,14 @@ pygame.display.set_caption('Gesturis')
 
 FONT_PATH = "fonts/kenney-mini.ttf"
 GESTURIS_COLOURS = [
+    "#FF1945",
+    "#FF6C13",
+    "#E1B400",
+    "#0EA41E",
+    "#4E84FE",
+    "#AD00FA"
+]
+GESTURIS_COLOURS_COLOUR_BLIND = [
     "#E15A06",
     "#FAA144",
     "#FFD75A",
@@ -75,6 +83,7 @@ SETTINGS_STATE = {
     "colour_blind_mode": False,
 }
 
+PLAYER_1_TURN = True # true means player 1 turn, false means player 2
 
 DROP_INTERVAL = 600
 

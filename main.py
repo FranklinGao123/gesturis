@@ -93,7 +93,7 @@ def runGame(curr_state):
     running = True
     score = 0
     lines = 0
-    mode = "SINGLE" # TODO: update when we deal with mode switching
+    mode = "SINGLE" if curr_state == settings.GameState.SINGLEPLAYER else "MULTI"
 
     # Font & Text
     in_game_font = pygame.font.Font(settings.FONT_PATH, 20)  # Default font
@@ -195,8 +195,12 @@ def runGame(curr_state):
         settings.display_surface.blit(scaled_victory_hand, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 2.55), settings.LEFT_TEXT_Y))
         settings.display_surface.blit(scaled_thumbs_up, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 6), settings.ROTATE_RIGHT_TEXT_Y))
         settings.display_surface.blit(scaled_thumbs_down, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 5.75), settings.ROTATE_LEFT_TEXT_Y))
-        settings.display_surface.blit(scaled_open_palm, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 4.5), settings.HOLD_SWAP_TEXT_Y))
-        settings.display_surface.blit(scaled_i_love_you, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 2.5), settings.DROP_TEXT_Y))
+        settings.display_surface.blit(scaled_open_palm, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 5.1), settings.HOLD_SWAP_TEXT_Y))
+        settings.display_surface.blit(scaled_i_love_you, (settings.INDIV_GESTURES_TEXT_X + (settings.GAME_PIXEL_SIZE * 2.7), settings.DROP_TEXT_Y))
+
+        # Header for multiplayer
+        if curr_state == settings.GameState.MULTIPLAYER:
+            displayMultiplayerHeader()
 
         for i in settings.staticBlocks:
             i.blit()
@@ -242,7 +246,6 @@ def main():
 
     curr_state = settings.GameState.MAIN_MENU
 
-    # TODO: add state for pause screen
     while True:
         if curr_state == settings.GameState.MAIN_MENU:
             curr_state = displayMenu(curr_state)
@@ -257,6 +260,12 @@ def main():
         
     # Close the window
     pygame.quit()
+
+def displayMultiplayerHeader():
+    header = "PLAYER 1'S TURN!" if settings.PLAYER_1_TURN else "PLAYER 2'S TURN!"
+    heading_font = pygame.font.Font(settings.FONT_PATH, 30)
+    header_text = heading_font.render(header, True, (255, 255, 255))
+    settings.display_surface.blit(header_text, (settings.STATS_BOX_X - 10, settings.STATS_BOX_Y - (settings.GAME_PIXEL_SIZE * 4)))
 
 
 
