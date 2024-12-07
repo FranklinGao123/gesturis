@@ -150,6 +150,10 @@ def runGame(curr_state):
 
     # MAIN GAME LOOP
     while running:
+
+        current_time = pygame.time.get_ticks()
+        overlay_start_time = 0
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -202,6 +206,10 @@ def runGame(curr_state):
         if curr_state == settings.GameState.MULTIPLAYER:
             displayMultiplayerHeader()
 
+        # Display game start banner
+        if current_time - overlay_start_time < 3000:
+            displayGameStartBanner()
+
         for i in settings.staticBlocks:
             i.blit()
         current_piece.blit()
@@ -239,6 +247,7 @@ def runGame(curr_state):
             lines, score = checkLineClear(lines, score)
         settings.KEYHANDLER.update()
 
+
     pygame.quit()
     sys.exit()
 
@@ -267,6 +276,24 @@ def displayMultiplayerHeader():
     header_text = heading_font.render(header, True, (255, 255, 255))
     settings.display_surface.blit(header_text, (settings.STATS_BOX_X - 10, settings.STATS_BOX_Y - (settings.GAME_PIXEL_SIZE * 4)))
 
+def displayGameStartBanner():
+    # Semi-transparent background
+    overlay = pygame.Surface((settings.WINDOW_WIDTH, settings.WINDOW_HEIGHT))
+    overlay.set_alpha(128)
+    overlay.fill((0, 0, 0))
+    settings.display_surface.blit(overlay, (0, 0))
+
+    # Modal box
+    modal_width, modal_height = 800, 200
+    modal_x = (settings.WINDOW_WIDTH - modal_width) // 2
+    modal_y = (settings.WINDOW_HEIGHT - modal_height) // 2
+    modal_rect = pygame.Rect(modal_x, modal_y, modal_width, modal_height)
+    pygame.draw.rect(settings.display_surface, (255, 255, 255), modal_rect, 0)
+
+    # Title
+    title_font = pygame.font.Font(settings.FONT_PATH, 110)
+    title_text = title_font.render("GAME START!", True, (0, 0, 0))
+    settings.display_surface.blit(title_text, (modal_rect.centerx - title_text.get_width() // 2, modal_rect.y + 25))
 
 
 def displayPauseScreen():
@@ -312,10 +339,6 @@ def displayPauseScreen():
     restart_button = pygame.Rect(BUTTON_X, RESTART_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT)
     quit_button = pygame.Rect(BUTTON_X, QUIT_Y, BUTTON_WIDTH, BUTTON_HEIGHT)
 
-    # Background box
-    # pause_box = pygame.Surface((400, 300))
-    # pause_box.fill((255, 255, 255))
-
     while pause_running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -328,9 +351,6 @@ def displayPauseScreen():
                     return "RESTART"
                 elif event.key == pygame.K_q:  # Quit on Q
                     return "QUIT"
-
-        # Render the pause screen
-        # settings.display_surface.blit(modal_rect, (settings.WINDOW_WIDTH // 2 - 200, settings.WINDOW_HEIGHT // 2 - 150))
 
         # Buttons
         # Draw buttons with hover effect
