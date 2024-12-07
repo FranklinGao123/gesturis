@@ -89,6 +89,11 @@ def displayMenu(curr_state):
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if cancel_button.collidepoint(mouse_x, mouse_y):
                         is_settings_active = False  # Close modal without saving
+                        new_settings_state = { # Reset
+                            "sound_fx_volume": settings.SETTINGS_STATE["sound_fx_volume"],
+                            "music_volume": settings.SETTINGS_STATE["music_volume"],
+                            "colour_blind_mode": settings.SETTINGS_STATE["colour_blind_mode"]
+                        }
                     elif save_button.collidepoint(mouse_x, mouse_y):
                         saveSettings(new_settings_state)  # Save the shared state
                         is_settings_active = False  # Close modal
