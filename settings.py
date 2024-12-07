@@ -24,7 +24,7 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
 display_surface = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 pygame.display.set_caption('Gesturis')
 
-FONT_PATH = "gesturis-master/fonts/kenney-mini.ttf"
+FONT_PATH = "./fonts/kenney-mini.ttf"
 GESTURIS_COLOURS = [
     "#E15A06",
     "#FAA144",
@@ -73,9 +73,9 @@ NEXT_PIECE_X, NEXT_PIECE_Y = GAME_X_OFFSET - (GAME_PIXEL_SIZE * 6.5), GAME_Y_OFF
 HOLD_PIECE_X, HOLD_PIECE_Y = GAME_X_OFFSET + GAME_PIXEL_SIZE * 10 + 50, GAME_Y_OFFSET
 
 
-DROP_INTERVAL = 60
+DROP_INTERVAL = 5
 
-INPUT_INTERVAL = 100
+INPUT_INTERVAL = 5
 
 KEYHANDLER = Key_Handler()
 
